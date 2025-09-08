@@ -16,9 +16,10 @@ function TaskDetails() {
     const fetchTaskDetails = async () => {
       try {
         const data = await getTaskDetails(id);
+        console.log(data,"data")
         setOffer(data);
       } catch (error) {
-        console.error("Error fetching task details:", error);
+        console.error("Error fetching offer details:", error);
         // Handle error appropriately, e.g., display an error message
       }
     };
@@ -35,6 +36,14 @@ function TaskDetails() {
   const handleStartTask = () => {
     setStartTask(true);
     setShowStartModal(true);
+  };
+
+  const handleStartTaskConfirm = () => {
+    setShowStartModal(false);
+    // Redirect to primary link if it exists
+    if (offer?.primaryLink) {
+      window.open(offer.primaryLink, '_blank');
+    }
   };
 
   const handleCompleteTask = () => {
@@ -158,7 +167,6 @@ function TaskDetails() {
               <div className="card-body">
                 <div className="mb-3">
                   {offer?.instructions?.map((instruction, index) => {
-                    const Icon = instruction.icon;
                     const isCompleted = completedSteps.includes(index);
                     return (
                       <div
@@ -167,7 +175,7 @@ function TaskDetails() {
                         className={`d-flex align-items-center gap-3 p-3 rounded mb-2 ${isCompleted ? 'bg-success bg-opacity-10 border border-success' : 'bg-light'} ${startTask ? 'cursor-pointer' : ''}`}
                       >
                         <div className={`rounded-circle d-flex align-items-center justify-content-center ${isCompleted ? 'bg-success text-white' : 'bg-primary bg-opacity-10 text-primary'}`} style={{ width: '45px', height: '45px' }}>
-                          {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                          {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Download className="w-5 h-5" />}
                         </div>
                         <div className="flex-grow-1">
                           <div className="d-flex align-items-center gap-2">
@@ -175,7 +183,7 @@ function TaskDetails() {
                             {isCompleted && <span className="badge bg-success">Completed</span>}
                           </div>
                           <p className={`mb-0 ${isCompleted ? 'text-success fw-medium' : 'fw-medium'}`}>
-                            {instruction.text}
+                            {instruction}
                           </p>
                         </div>
                       </div>
@@ -197,8 +205,7 @@ function TaskDetails() {
               </div>
             </div>
 
-            {/* Reward Breakdown */}
-
+         
           </div>
 
           {/* Modals */}
@@ -208,10 +215,10 @@ function TaskDetails() {
                 <div className="modal-content">
                   <div className="modal-body text-center p-4">
                     <div className="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '80px', height: '80px' }}>
-                      <Zap className="w-4 h-4 text-white" />
+                      <Zap className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="h4 fw-bold mb-2">Task Started!</h3>
-                    <p className="text-muted">Complete all steps to earn your reward</p>
+                    <h3 className="h4 fw-bold mb-2">Ready to Start?</h3>
+                    <p className="text-muted mb-3">You'll be redirected to download the app. Complete all steps to earn your reward!</p>
 
                     <div className="alert alert-warning mb-3">
                       <div className="d-flex gap-2">
@@ -222,12 +229,20 @@ function TaskDetails() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => setShowStartModal(false)}
-                      className="btn btn-primary w-100"
-                    >
-                      Let's Go!
-                    </button>
+                    <div className="d-flex gap-2">
+                      <button
+                        onClick={() => setShowStartModal(false)}
+                        className="btn btn-outline-secondary flex-fill"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleStartTaskConfirm}
+                        className="btn btn-primary flex-fill"
+                      >
+                        Let's Go!
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -240,7 +255,7 @@ function TaskDetails() {
                 <div className="modal-content">
                   <div className="modal-body text-center p-4">
                     <div className="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '80px', height: '80px' }}>
-                      <Trophy className="w-4 h-4 text-white" />
+                      <Trophy className="w-10 h-10 text-white" />
                     </div>
                     <h3 className="h4 fw-bold mb-2">Congratulations!</h3>
                     <p className="text-muted">You've successfully completed the task</p>
@@ -266,7 +281,14 @@ function TaskDetails() {
           )}
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="d-flex justify-content-center align-items-center min-vh-100">
+          <div className="text-center">
+            <div className="spinner-border text-primary mb-3" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="text-muted">Loading offer details...</p>
+          </div>
+        </div>
       )}
     </>
   );
