@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
+import ComingSoon from './ComingSoon'; // Import the ComingSoon component
 
 function Settings() {
+  // Coming Soon modal state
+  const [showComingSoon, setShowComingSoon] = useState(true);
+
   const [settings, setSettings] = useState({
     // Account Settings
     profileName: 'John Doe',
     email: 'john.doe@example.com',
     phone: '+91 98765 43210',
-    
+
     // Notification Settings
     pushNotifications: true,
     emailNotifications: true,
     smsNotifications: false,
     referralAlerts: true,
     paymentAlerts: true,
-    
+
     // Payment Settings
     upiId: 'john@paytm',
     panCard: 'ABCDE****F',
-    
-    // App Settings
-    darkMode: false,
-    language: 'en',
-    autoCheckIn: true,
-    
+
     // Security Settings
-    twoFactorAuth: false,
     loginAlerts: true
   });
 
@@ -36,7 +34,7 @@ function Settings() {
   };
 
   const SettingCard = ({ title, children, icon }) => (
-    <div 
+    <div
       className="mb-4 p-4 rounded-3"
       style={{
         background: 'rgba(255, 255, 255, 0.1)',
@@ -45,7 +43,7 @@ function Settings() {
       }}
     >
       <div className="d-flex align-items-center mb-3">
-        <div 
+        <div
           className="me-3 d-flex align-items-center justify-content-center"
           style={{
             background: 'linear-gradient(45deg, #7209b7, #a855f7)',
@@ -65,7 +63,7 @@ function Settings() {
   const ToggleSwitch = ({ checked, onChange, label }) => (
     <div className="d-flex justify-content-between align-items-center mb-3">
       <span className="text-white">{label}</span>
-      <div 
+      <div
         className="position-relative"
         style={{ cursor: 'pointer' }}
         onClick={() => onChange(!checked)}
@@ -116,37 +114,21 @@ function Settings() {
     </div>
   );
 
-  const SelectField = ({ label, value, onChange, options }) => (
-    <div className="mb-3">
-      <label className="text-white mb-2 d-block">{label}</label>
-      <select
-        className="form-select"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        style={{
-          background: 'rgba(255, 255, 255, 0.1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          color: 'white',
-          borderRadius: '8px',
-          padding: '12px'
-        }}
-      >
-        {options.map(option => (
-          <option key={option.value} value={option.value} style={{ background: '#1a1a2e', color: 'white' }}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-
   return (
-    <div 
-      className="min-vh-100 py-4"
+    <div
+      className="min-vh-100 py-4 position-relative"
       style={{
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%)'
       }}
     >
+      {/* Coming Soon Overlay */}
+      <ComingSoon 
+        show={showComingSoon} 
+        onClose={() => setShowComingSoon(false)}
+        title="COMING SOON"
+        subtitle="Settings Feature Under Development"
+      />
+
       <div className="container">
         {/* Header */}
         <div className="mb-4">
@@ -155,12 +137,12 @@ function Settings() {
         </div>
 
         {/* Account Settings */}
-        <SettingCard 
+        <SettingCard
           title="Account Settings"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="7" r="4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="7" r="4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
         >
@@ -187,12 +169,12 @@ function Settings() {
         </SettingCard>
 
         {/* Payment Settings */}
-        <SettingCard 
+        <SettingCard
           title="Payment Settings"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
         >
@@ -202,7 +184,6 @@ function Settings() {
             onChange={(value) => handleInputChange('upiId', value)}
             placeholder="Enter your UPI ID"
           />
-         
           <InputField
             label="PAN Card"
             value={settings.panCard}
@@ -212,12 +193,12 @@ function Settings() {
         </SettingCard>
 
         {/* Notification Settings */}
-        <SettingCard 
+        <SettingCard
           title="Notification Settings"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
         >
@@ -248,61 +229,23 @@ function Settings() {
           />
         </SettingCard>
 
-        {/* App Settings */}
-        <SettingCard 
-          title="App Settings"
-          icon={
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="3" stroke="white" strokeWidth="2"/>
-              <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-3.5L19 4l-1.5 1.5M5 20l-1.5-1.5L5 17m0-10L3.5 5.5 5 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          }
-        >
-          <ToggleSwitch
-            checked={settings.darkMode}
-            onChange={(value) => handleInputChange('darkMode', value)}
-            label="Dark Mode"
-          />
-          <ToggleSwitch
-            checked={settings.autoCheckIn}
-            onChange={(value) => handleInputChange('autoCheckIn', value)}
-            label="Auto Check-in"
-          />
-          <SelectField
-            label="Language"
-            value={settings.language}
-            onChange={(value) => handleInputChange('language', value)}
-            options={[
-              { value: 'en', label: 'English' },
-              { value: 'hi', label: 'Hindi' },
-              { value: 'ta', label: 'Tamil' },
-              { value: 'te', label: 'Telugu' }
-            ]}
-          />
-        </SettingCard>
-
         {/* Security Settings */}
-        <SettingCard 
+        <SettingCard
           title="Security Settings"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="16" r="1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="16" r="1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
         >
-          <ToggleSwitch
-            checked={settings.twoFactorAuth}
-            onChange={(value) => handleInputChange('twoFactorAuth', value)}
-            label="Two-Factor Authentication"
-          />
           <ToggleSwitch
             checked={settings.loginAlerts}
             onChange={(value) => handleInputChange('loginAlerts', value)}
             label="Login Alerts"
           />
-          <button 
+          <button
             className="btn w-100 mb-3"
             style={{
               background: 'linear-gradient(45deg, #ef4444, #dc2626)',
@@ -318,17 +261,17 @@ function Settings() {
         </SettingCard>
 
         {/* Quick Actions */}
-        <SettingCard 
+        <SettingCard
           title="Quick Actions"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
         >
           <div className="row g-3">
             <div className="col-md-6">
-              <button 
+              <button
                 className="btn w-100"
                 style={{
                   background: 'linear-gradient(45deg, #10b981, #059669)',
@@ -343,7 +286,7 @@ function Settings() {
               </button>
             </div>
             <div className="col-md-6">
-              <button 
+              <button
                 className="btn w-100"
                 style={{
                   background: 'linear-gradient(45deg, #3b82f6, #2563eb)',
@@ -361,17 +304,17 @@ function Settings() {
         </SettingCard>
 
         {/* Support & Help */}
-        <SettingCard 
+        <SettingCard
           title="Support & Help"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
         >
           <div className="row g-3">
             <div className="col-md-4">
-              <button 
+              <button
                 className="btn w-100"
                 style={{
                   background: 'rgba(255, 255, 255, 0.1)',
@@ -385,7 +328,7 @@ function Settings() {
               </button>
             </div>
             <div className="col-md-4">
-              <button 
+              <button
                 className="btn w-100"
                 style={{
                   background: 'rgba(255, 255, 255, 0.1)',
@@ -399,7 +342,7 @@ function Settings() {
               </button>
             </div>
             <div className="col-md-4">
-              <button 
+              <button
                 className="btn w-100"
                 style={{
                   background: 'rgba(255, 255, 255, 0.1)',
@@ -417,7 +360,7 @@ function Settings() {
 
         {/* Save Button */}
         <div className="text-center">
-          <button 
+          <button
             className="btn px-5 py-3"
             style={{
               background: 'linear-gradient(45deg, #7209b7, #a855f7)',
@@ -440,6 +383,10 @@ function Settings() {
             Save All Changes
           </button>
         </div>
+
+        <div className="pb-4 pb-md-5"></div>
+        <div className="pb-4 pb-md-5"></div>
+        <div className="pb-4 pb-4"></div>
       </div>
     </div>
   );

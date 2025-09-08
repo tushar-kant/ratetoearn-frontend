@@ -9,6 +9,8 @@ const API_PATHS = {
   REVIEW_OFFERS: '/reviewOffers',
   REVIEW_OFFERS_ID: '/reviewOffersDetails',
   CHECKIN: '/checkin',
+  WITHDRAW: '/withdraw',
+  GET_LIST_OF_WITHDRAW:'/getWithdrawals'
 };
 
 export default API_PATHS;

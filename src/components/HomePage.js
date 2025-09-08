@@ -1,19 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { get } from '../api/apiService';
+import { get, post } from '../api/apiService';
 import API_PATHS from '../api/apiPath';
 import { useNavigate } from "react-router-dom";
 
 
 function HomePage() {
     const navigate = useNavigate();
-
+  const [userData, setUserData] = useState(null);
   const [earnings, setEarnings] = useState({
-    totalPoints: 28470, // Changed to points (10 points = 1 INR)
-    totalWithdrawnPoints: 12000,
-    withdrawablePoints: 16470
+    totalPoints: 0,
+    totalWithdrawnPoints: 0,
+    withdrawablePoints: 0
   });
   const [isWithdrawing, setIsWithdrawing] = useState(false);
-  const [referralCode] = useState('RTR2024XYZ'); // User's referral code
+  const [referralCode,setReferralCode] = useState('ADMIN001'); // User's referral code
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userData && userData.phoneNumber) {
+      fetchEarning(userData.phoneNumber);
+    }
+  }, [userData]);
+
+  const fetchEarning = async (phoneNumber) => {
+    try {
+      const response = await post(API_PATHS.EARNING, { phone: phoneNumber });
+
+      setEarnings({
+        totalPoints: response.totalEarning,
+        totalWithdrawnPoints: response.totalWithdrawn,
+        withdrawablePoints: response.availableNow
+      });
+      setReferralCode(response.referralCode)
+    } catch (error) {
+      console.error('Error fetching earning:', error);
+    }
+  };
 
   // Conversion rate: 10 points = 1 INR
   const pointsToINR = (points) => points / 10;

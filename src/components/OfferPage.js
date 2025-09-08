@@ -53,7 +53,7 @@ function OfferPage() {
   }, [selectedCategory, sortBy, offers]);
 
   const getDifficultyClass = (difficulty) => {
-    switch(difficulty) {
+    switch (difficulty) {
       case 'Easy': return 'badge bg-success';
       case 'Medium': return 'badge bg-warning text-dark';
       case 'Hard': return 'badge bg-danger';
@@ -116,100 +116,107 @@ function OfferPage() {
           color: #6b7280;
           font-size: 0.9rem;
         }
+            .page-bg {
+          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+          min-height: 100vh;
+        }
       `}</style>
+      <div className="page-bg">
 
-      <div className="container mt-4">
-        {/* Header with filters */}
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-          <div className="mb-3 mb-md-0">
-            <h2 className="mb-1 text-dark">Offers</h2>
-            <span className="text-muted">{filteredOffers.length} results</span>
-          </div>
-          
-          {/* Filter Controls */}
-          <div className="d-flex gap-3">
-            <div>
-              <select
-                className="filter-select"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="">Category</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
+        <div className="container pt-4">
+          {/* Header with filters */}
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+            <div className="mb-3 mb-md-0">
+              <h2 className="mb-1 text-dark">Offers</h2>
+              <span className="text-muted">{filteredOffers.length} results</span>
             </div>
-            
-            <div>
-              <select
-                className="filter-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="earning">Sort by Price</option>
-                <option value="rating">Sort by Rating</option>
-                <option value="name">Sort by Name</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        {loading ? (
-          <p>Loading offers...</p>
-        ) : error ? (
-          <p>Error: {error.message}</p>
-        ) : (
-          /* Offers Grid */
-          <div className="row">
-            {filteredOffers.map(offer => (
-              <div key={offer._id} className="col-md-6 col-lg-4 mb-4">
-                <Link
-                  to={`/offer/${offer._id}`}
-                  className="card text-decoration-none text-dark h-100 purple-card"
+
+            {/* Filter Controls */}
+            <div className="d-flex gap-3">
+              <div>
+                <select
+                  className="filter-select"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
                 >
-                  <div className="card-body p-4">
-                    {/* Header with category and difficulty */}
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <span className="category-badge">
-                        {offer.category}
-                      </span>
-                      <span className={getDifficultyClass(offer.difficulty)}>
-                        {offer.difficulty}
-                      </span>
-                    </div>
-
-                    {/* Title and Description */}
-                    <div className="mb-4">
-                      <h5 className="card-title offer-title mb-2">{offer.name}</h5>
-                      <p className="card-text offer-description mb-3">{offer.description}</p>
-
-                      {/* Rating */}
-                      <div className="d-flex align-items-center mb-2">
-                        <div className="star-rating me-2">
-                          {'★'.repeat(Math.floor(offer.rating))}
-                          {offer.rating % 1 !== 0 && '☆'}
-                        </div>
-                        <span className="text-muted small">{offer.rating}</span>
-                      </div>
-                    </div>
-
-                    {/* Footer with price and arrow */}
-                    <div className="d-flex justify-content-between align-items-center mt-auto">
-                      <span className="price-badge">
-                        ${offer.earning}
-                      </span>
-                      <div className="d-flex align-items-center">
-                        <span className="text-muted me-2 small">View Details</span>
-                        <i className="fas fa-chevron-right" style={{ color: '#b794f6' }}></i>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                  <option value="">Category</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
               </div>
-            ))}
+
+              <div>
+                <select
+                  className="filter-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="earning">Sort by Price</option>
+                  <option value="rating">Sort by Rating</option>
+                  <option value="name">Sort by Name</option>
+                </select>
+              </div>
+            </div>
           </div>
-        )}
+          {loading ? (
+            <p>Loading offers...</p>
+          ) : error ? (
+            <p>Error: {error.message}</p>
+          ) : (
+            /* Offers Grid */
+            <div className="row">
+              {filteredOffers.map(offer => (
+                <div key={offer._id} className="col-md-6 col-lg-4 mb-4">
+                  <Link
+                    to={`/offer/${offer._id}`}
+                    className="card text-decoration-none text-dark h-100 purple-card"
+                  >
+                    <div className="card-body p-4">
+                      {/* Header with category and difficulty */}
+                      <div className="d-flex justify-content-between align-items-start mb-3">
+                        <span className="category-badge">
+                          {offer.category}
+                        </span>
+                        <span className={getDifficultyClass(offer.difficulty)}>
+                          {offer.difficulty}
+                        </span>
+                      </div>
+
+                      {/* Title and Description */}
+                      <div className="mb-4">
+                        <h5 className="card-title offer-title mb-2">{offer.name}</h5>
+                        <p className="card-text offer-description mb-3">{offer.description}</p>
+
+                        {/* Rating */}
+                        <div className="d-flex align-items-center mb-2">
+                          <div className="star-rating me-2">
+                            {'★'.repeat(Math.floor(offer.rating))}
+                            {offer.rating % 1 !== 0 && '☆'}
+                          </div>
+                          <span className="text-muted small">{offer.rating}</span>
+                        </div>
+                      </div>
+
+                      {/* Footer with price and arrow */}
+                      <div className="d-flex justify-content-between align-items-center mt-auto">
+                        <span className="price-badge">
+                          ${offer.earning}
+                        </span>
+                        <div className="d-flex align-items-center">
+                          <span className="text-muted me-2 small">View Details</span>
+                          <i className="fas fa-chevron-right" style={{ color: '#b794f6' }}></i>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+
     </>
   );
 }

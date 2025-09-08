@@ -79,7 +79,7 @@ function Header() {
                 letterSpacing: '-0.01em'
               }}
             >
-              Download & Earn
+              Tasky
             </h1>
           </div>
 

@@ -1,28 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { post } from '../api/apiService';
+import API_PATHS from '../api/apiPath';
+import { useNavigate } from "react-router-dom";
+
 
 function WithdrawPage() {
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
   const [selectedMethod, setSelectedMethod] = useState('upi');
   const [upiId, setUpiId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-  // Sample withdraw data
-  const withdrawablePoints = 16470;
-  const withdrawableAmount = withdrawablePoints / 10; // 10 points = 1 INR
 
-  const handleSubmit = () => {
+  const [availableBalance, setAvailableBalance] = useState(0);
+  const withdrawablePoints = availableBalance;
+  const withdrawableAmount = availableBalance / 10; // 10 points = 1 INR
+
+  useEffect(() => {
+    if (userData && userData.phoneNumber) {
+      fetchEarning(userData.phoneNumber);
+    }
+  }, [userData]);
+
+  const fetchEarning = async (phoneNumber) => {
+    try {
+      const response = await post(API_PATHS.EARNING, { phone: phoneNumber });
+      setAvailableBalance(response.availableNow);
+    } catch (error) {
+      console.error('Error fetching earning:', error);
+    }
+  };
+
+  const handleSubmit = async () => {
     if (!upiId.trim()) {
       alert('Please enter your UPI ID');
       return;
     }
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      const payload = {
+        amount: withdrawableAmount,
+        type: 'UPI',
+        upiid: upiId,
+        phoneNumber: userData.phoneNumber,
+      };
+
+      const response = await post(API_PATHS.WITHDRAW, payload);
+
+      if (response.status === 201) {
+        // Withdrawal request created successfully
+        setShowSuccessModal(true);
+        fetchEarning(userData.phoneNumber); // Fetch updated earning
+      } else {
+        // Handle error
+        setShowSuccessModal(true);
+        fetchEarning(userData.phoneNumber); // Fetch updated earning
+
+      }
+    } catch (error) {
+      console.error('Error creating withdrawal:', error);
+      alert('Withdrawal request failed');
+    } finally {
       setIsSubmitting(false);
-      setShowSuccessModal(true);
-    }, 2000);
+    }
   };
 
   const closeSuccessModal = () => {
@@ -31,11 +81,13 @@ function WithdrawPage() {
   };
 
   const handleGoBack = () => {
-    alert('Going back to home page');
+    // alert('Going back to home page');
+    navigate('/home');
+
   };
 
   return (
-    <div 
+    <div
       className="min-vh-100"
       style={{
         background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 30%, #16213e 70%, #533483 100%)',
@@ -62,10 +114,10 @@ function WithdrawPage() {
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <h2 
+          <h2
             style={{
               color: 'white',
               fontSize: '1.5rem',
@@ -78,7 +130,7 @@ function WithdrawPage() {
         </div>
 
         {/* Available Balance */}
-        <div 
+        <div
           className="mb-4"
           style={{
             background: 'rgba(255, 255, 255, 0.1)',
@@ -92,7 +144,7 @@ function WithdrawPage() {
           <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.9rem', marginBottom: '8px' }}>
             Available Balance
           </div>
-          <div 
+          <div
             style={{
               fontSize: '1.6rem',
               fontWeight: '700',
@@ -111,7 +163,7 @@ function WithdrawPage() {
         </div>
 
         {/* Withdrawal Methods */}
-        <div 
+        <div
           className="mb-4"
           style={{
             background: 'rgba(255, 255, 255, 0.1)',
@@ -127,14 +179,14 @@ function WithdrawPage() {
 
           {/* UPI Method - Active */}
           <div className="mb-3">
-            <div 
+            <div
               onClick={() => setSelectedMethod('upi')}
               style={{
-                background: selectedMethod === 'upi' 
-                  ? 'rgba(168, 85, 247, 0.3)' 
+                background: selectedMethod === 'upi'
+                  ? 'rgba(168, 85, 247, 0.3)'
                   : 'rgba(255, 255, 255, 0.05)',
-                border: selectedMethod === 'upi' 
-                  ? '2px solid #a855f7' 
+                border: selectedMethod === 'upi'
+                  ? '2px solid #a855f7'
                   : '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: '12px',
                 padding: '15px',
@@ -143,7 +195,7 @@ function WithdrawPage() {
               }}
             >
               <div className="d-flex align-items-center">
-                <div 
+                <div
                   style={{
                     width: '20px',
                     height: '20px',
@@ -170,8 +222,8 @@ function WithdrawPage() {
                 </div>
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="#10b981" strokeWidth="2"/>
-                    <path d="M9 12L11 14L15 10" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="12" r="10" stroke="#10b981" strokeWidth="2" />
+                    <path d="M9 12L11 14L15 10" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               </div>
@@ -180,7 +232,7 @@ function WithdrawPage() {
 
           {/* Gift Card Method - Disabled */}
           <div className="mb-3">
-            <div 
+            <div
               style={{
                 background: 'rgba(255, 255, 255, 0.02)',
                 border: '1px solid rgba(255, 255, 255, 0.05)',
@@ -191,7 +243,7 @@ function WithdrawPage() {
               }}
             >
               <div className="d-flex align-items-center">
-                <div 
+                <div
                   style={{
                     width: '20px',
                     height: '20px',
@@ -210,9 +262,9 @@ function WithdrawPage() {
                 </div>
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
-                    <line x1="15" y1="9" x2="9" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
-                    <line x1="9" y1="9" x2="15" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
+                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                    <line x1="15" y1="9" x2="9" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                    <line x1="9" y1="9" x2="15" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
                   </svg>
                 </div>
               </div>
@@ -221,7 +273,7 @@ function WithdrawPage() {
 
           {/* Crypto Method - Disabled */}
           <div>
-            <div 
+            <div
               style={{
                 background: 'rgba(255, 255, 255, 0.02)',
                 border: '1px solid rgba(255, 255, 255, 0.05)',
@@ -232,7 +284,7 @@ function WithdrawPage() {
               }}
             >
               <div className="d-flex align-items-center">
-                <div 
+                <div
                   style={{
                     width: '20px',
                     height: '20px',
@@ -251,9 +303,9 @@ function WithdrawPage() {
                 </div>
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
-                    <line x1="15" y1="9" x2="9" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
-                    <line x1="9" y1="9" x2="15" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
+                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                    <line x1="15" y1="9" x2="9" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                    <line x1="9" y1="9" x2="15" y2="15" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
                   </svg>
                 </div>
               </div>
@@ -263,14 +315,14 @@ function WithdrawPage() {
 
         {/* UPI Details Form */}
         {selectedMethod === 'upi' && (
-          <div 
+          <div
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
               backdropFilter: 'blur(20px)',
               borderRadius: '15px',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               padding: '20px',
-              paddingBottom:"100px"
+              paddingBottom: "100px"
             }}
           >
             <h5 style={{ color: 'white', marginBottom: '20px', fontWeight: '600' }}>
@@ -303,7 +355,7 @@ function WithdrawPage() {
               </div>
             </div>
 
-            <div 
+            <div
               className="mb-4"
               style={{
                 background: 'rgba(16, 185, 129, 0.1)',
@@ -327,8 +379,8 @@ function WithdrawPage() {
               disabled={isSubmitting}
               className="w-100"
               style={{
-                background: isSubmitting 
-                  ? 'rgba(168, 85, 247, 0.5)' 
+                background: isSubmitting
+                  ? 'rgba(168, 85, 247, 0.5)'
                   : 'linear-gradient(45deg, #7209b7, #a855f7)',
                 border: 'none',
                 borderRadius: '12px',
@@ -346,7 +398,7 @@ function WithdrawPage() {
             >
               {isSubmitting ? (
                 <>
-                  <div 
+                  <div
                     style={{
                       width: '20px',
                       height: '20px',
@@ -368,7 +420,7 @@ function WithdrawPage() {
 
         {/* Success Modal */}
         {showSuccessModal && (
-          <div 
+          <div
             style={{
               position: 'fixed',
               top: '0',
@@ -384,7 +436,7 @@ function WithdrawPage() {
             }}
             onClick={closeSuccessModal}
           >
-            <div 
+            <div
               style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #533483 100%)',
                 borderRadius: '20px',
@@ -398,7 +450,7 @@ function WithdrawPage() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Success Icon */}
-              <div 
+              <div
                 style={{
                   width: '80px',
                   height: '80px',
@@ -412,11 +464,11 @@ function WithdrawPage() {
                 }}
               >
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-                  <polyline points="20,6 9,17 4,12" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                  <polyline points="20,6 9,17 4,12" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
 
-              <h3 
+              <h3
                 style={{
                   color: 'white',
                   fontSize: '1.5rem',
@@ -427,7 +479,7 @@ function WithdrawPage() {
                 Withdrawal Successful!
               </h3>
 
-              <p 
+              <p
                 style={{
                   color: 'rgba(255, 255, 255, 0.8)',
                   fontSize: '1rem',
@@ -438,7 +490,7 @@ function WithdrawPage() {
                 Your withdrawal request of <strong>₹{withdrawableAmount.toLocaleString()}</strong> has been submitted successfully.
               </p>
 
-              <div 
+              <div
                 style={{
                   background: 'rgba(16, 185, 129, 0.1)',
                   border: '1px solid rgba(16, 185, 129, 0.3)',
