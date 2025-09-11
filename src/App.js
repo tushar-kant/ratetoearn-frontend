@@ -6,11 +6,10 @@ import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Registration from './components/Registration';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 import OfferPage from './components/OfferPage';
 import OfferDetails from './components/OfferDetails';
-import UploadProof from './components/UploadProof';
-import SuccessModal from './components/SuccessModal';
+
 import TasksPage from './components/TasksPage';
 import Games from './components/Games';
 import { useState, useEffect } from 'react';

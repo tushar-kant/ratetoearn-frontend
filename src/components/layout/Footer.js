@@ -12,10 +12,10 @@ function Footer({ isLoggedIn, handleLogout }) {
       }}
     >
       <div className="container">
-        <div className="d-flex justify-content-between align-items-center w-100 py-2">
+        <div className="d-flex justify-content-between align-items-center w-100 ">
           {isLoggedIn ? (
             <>
-              {/* Home Section */}
+            
               <Link 
                 to="/home" 
                 className="text-decoration-none d-flex flex-column align-items-center"
@@ -59,7 +59,7 @@ function Footer({ isLoggedIn, handleLogout }) {
                 Home
               </Link>
               
-              {/* Offers Section */}
+           
               <Link 
                 to="/offers" 
                 className="text-decoration-none d-flex flex-column align-items-center"
@@ -121,7 +121,7 @@ function Footer({ isLoggedIn, handleLogout }) {
                 Offers
               </Link>
               
-              {/* Tasks Section */}
+           
               <Link 
                 to="/tasks" 
                 className="text-decoration-none d-flex flex-column align-items-center"
@@ -250,72 +250,6 @@ function Footer({ isLoggedIn, handleLogout }) {
                 </svg>
                 Review
               </Link>
-
-                {/* <Link 
-                to="/games" 
-                className="text-decoration-none d-flex flex-column align-items-center"
-                style={{
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  fontWeight: '500',
-                  transition: 'all 0.3s ease',
-                  minWidth: '60px'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#a855f7';
-                  e.currentTarget.style.textShadow = '0 0 10px rgba(168, 85, 247, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'white';
-                  e.currentTarget.style.textShadow = 'none';
-                }}
-              >
-                <svg 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  className="mb-1"
-                  style={{ stroke: 'currentColor' }}
-                >
-                  <path 
-                    d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                  <polyline 
-                    points="14,2 14,8 20,8" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                  <line 
-                    x1="16" 
-                    y1="13" 
-                    x2="8" 
-                    y2="13" 
-                    strokeWidth="2" 
-                    strokeLinecap="round"
-                  />
-                  <line 
-                    x1="16" 
-                    y1="17" 
-                    x2="8" 
-                    y2="17" 
-                    strokeWidth="2" 
-                    strokeLinecap="round"
-                  />
-                  <polyline 
-                    points="10,9 9,9 8,9" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Games
-              </Link> */}
-
 
               
               

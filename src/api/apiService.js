@@ -79,4 +79,34 @@ export const getReviewDetails = async (id) => {
   }
 };
 
+export const completeReview = async (taskId, phone) => {
+  try {
+    const response = await post(API_PATHS.REVIEW_COMPLETE_APP_OFFER, { taskId, phone });
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const completeTaskReview = async (taskId, phone) => {
+  try {
+    const response = await post(API_PATHS.REVIEW_COMPLETE_TASK_OFFER, { taskId, phone });
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const completeReviewReview = async (taskId, phone) => {
+  try {
+    const response = await post(API_PATHS.REVIEW_COMPLETE_REVIEW_OFFER, { taskId, phone });
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export default api;

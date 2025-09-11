@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTaskDetails } from '../api/apiService';
+import { getTaskDetails, completeTaskReview } from '../api/apiService';
 import { ChevronRight, Download, Clock, Trophy, CheckCircle, Info, Star, TrendingUp, Gift, Shield, Zap, AlertCircle } from 'lucide-react';
 
 function TaskDetails() {
@@ -38,7 +38,20 @@ function TaskDetails() {
     setShowStartModal(true);
   };
 
-  const handleStartTaskConfirm = () => {
+  const handleStartTaskConfirm = async () => {
+     try {
+      const taskId = id;
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      const phone = userData?.phoneNumber;
+      if (!phone) {
+        console.error("Phone number not found in local storage");
+        return;
+      }
+      const response = await completeTaskReview(taskId, phone);
+      console.log("Review completed successfully", response);
+    } catch (error) {
+      console.error("Error completing review:", error);
+    }
     setShowStartModal(false);
     // Redirect to primary link if it exists
     if (offer?.primaryLink) {
@@ -46,8 +59,9 @@ function TaskDetails() {
     }
   };
 
-  const handleCompleteTask = () => {
+  const handleCompleteTask = async () => {
     setShowCompletionModal(true);
+   
   };
 
   const toggleStep = (index) => {
@@ -81,7 +95,7 @@ function TaskDetails() {
                   </div>
                   <div className="text-end ms-3">
                     <div className="bg-white bg-opacity-10 rounded-3 p-3">
-                      <div className="h3 fw-bold mb-1">${offer?.earning}</div>
+                      <div className="h3 fw-bold mb-1"> coins {offer?.earning}</div>
                       <div className="small text-white text-opacity-80">Total Reward</div>
                     </div>
                   </div>
@@ -263,7 +277,7 @@ function TaskDetails() {
                     <div className="alert alert-success mb-3">
                       <div className="text-center">
                         <p className="small mb-1">Your Reward</p>
-                        <p className="h4 fw-bold text-success mb-1">${offer?.earning}</p>
+                        <p className="h4 fw-bold text-success mb-1">write coins {offer?.earning}</p>
                         <p className="small mb-0">Will be credited within 24 hours</p>
                       </div>
                     </div>
