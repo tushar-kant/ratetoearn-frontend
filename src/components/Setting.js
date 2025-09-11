@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import ComingSoon from './ComingSoon'; // Import the ComingSoon component
+import React, { useState, useEffect } from 'react';
+import apiService from '../api/apiService';
+import API_PATHS from '../api/apiPath';
+import SuccessModal from './SuccessModal';
 
 function Settings() {
-  // Coming Soon modal state
-  const [showComingSoon, setShowComingSoon] = useState(true);
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const userData = JSON.parse(localStorage.getItem('userData')) || {};
   const [settings, setSettings] = useState({
     // Account Settings
-    profileName: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+91 98765 43210',
+    profileName: '',
+    email: '',
 
     // Notification Settings
     pushNotifications: true,
@@ -114,6 +114,21 @@ function Settings() {
     </div>
   );
 
+  useEffect(() => {
+    const fetchSettings = async () => {
+      if (userData && userData.phoneNumber) {
+        try {
+          const response = await apiService.post(API_PATHS.GET_SETTINGS, { phone: userData.phoneNumber });
+          setSettings(response.settings);
+        } catch (error) {
+          console.error('Error fetching settings:', error);
+        }
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
   return (
     <div
       className="min-vh-100 py-4 position-relative"
@@ -121,13 +136,6 @@ function Settings() {
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%)'
       }}
     >
-      {/* Coming Soon Overlay */}
-      <ComingSoon 
-        show={showComingSoon} 
-        onClose={() => setShowComingSoon(false)}
-        title="COMING SOON"
-        subtitle="Settings Feature Under Development"
-      />
 
       <div className="container">
         {/* Header */}
@@ -148,24 +156,18 @@ function Settings() {
         >
           <InputField
             label="Full Name"
-            value={settings.profileName}
+            value={settings?.profileName || ''}
             onChange={(value) => handleInputChange('profileName', value)}
             placeholder="Enter your full name"
           />
           <InputField
             label="Email Address"
-            value={settings.email}
+            value={settings?.email || ''}
             onChange={(value) => handleInputChange('email', value)}
             type="email"
             placeholder="Enter your email"
           />
-          <InputField
-            label="Phone Number"
-            value={settings.phone}
-            onChange={(value) => handleInputChange('phone', value)}
-            type="tel"
-            placeholder="Enter your phone number"
-          />
+     
         </SettingCard>
 
         {/* Payment Settings */}
@@ -180,13 +182,13 @@ function Settings() {
         >
           <InputField
             label="UPI ID"
-            value={settings.upiId}
+            value={settings?.upiId || ''}
             onChange={(value) => handleInputChange('upiId', value)}
             placeholder="Enter your UPI ID"
           />
           <InputField
             label="PAN Card"
-            value={settings.panCard}
+            value={settings?.panCard || ''}
             onChange={(value) => handleInputChange('panCard', value)}
             placeholder="Enter PAN card number"
           />
@@ -203,27 +205,27 @@ function Settings() {
           }
         >
           <ToggleSwitch
-            checked={settings.pushNotifications}
+            checked={settings?.pushNotifications === undefined ? true : settings.pushNotifications}
             onChange={(value) => handleInputChange('pushNotifications', value)}
             label="Push Notifications"
           />
           <ToggleSwitch
-            checked={settings.emailNotifications}
+            checked={settings?.emailNotifications === undefined ? true : settings.emailNotifications}
             onChange={(value) => handleInputChange('emailNotifications', value)}
             label="Email Notifications"
           />
           <ToggleSwitch
-            checked={settings.smsNotifications}
+            checked={settings?.smsNotifications === undefined ? false : settings.smsNotifications}
             onChange={(value) => handleInputChange('smsNotifications', value)}
             label="SMS Notifications"
           />
           <ToggleSwitch
-            checked={settings.referralAlerts}
+            checked={settings?.referralAlerts === undefined ? true : settings.referralAlerts}
             onChange={(value) => handleInputChange('referralAlerts', value)}
             label="Referral Alerts"
           />
           <ToggleSwitch
-            checked={settings.paymentAlerts}
+            checked={settings?.paymentAlerts === undefined ? true : settings.paymentAlerts}
             onChange={(value) => handleInputChange('paymentAlerts', value)}
             label="Payment Alerts"
           />
@@ -241,7 +243,7 @@ function Settings() {
           }
         >
           <ToggleSwitch
-            checked={settings.loginAlerts}
+            checked={settings?.loginAlerts}
             onChange={(value) => handleInputChange('loginAlerts', value)}
             label="Login Alerts"
           />
@@ -371,6 +373,17 @@ function Settings() {
               fontSize: '16px',
               transition: 'all 0.2s ease'
             }}
+            onClick={async () => {
+              if (userData && userData.phoneNumber) {
+                try {
+                  await apiService.post(API_PATHS.SETTINGS, { phone: userData.phoneNumber, settings: settings });
+                  setShowSuccessModal(true);
+                } catch (error) {
+                  console.error('Error updating settings:', error);
+                  alert('Failed to update settings.');
+                }
+              }
+            }}
             onMouseEnter={(e) => {
               e.target.style.transform = 'scale(1.05)';
               e.target.style.boxShadow = '0 5px 15px rgba(114, 9, 183, 0.4)';
@@ -388,6 +401,11 @@ function Settings() {
         <div className="pb-4 pb-md-5"></div>
         <div className="pb-4 pb-4"></div>
       </div>
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        message="Settings updated successfully!"
+      />
     </div>
   );
 }

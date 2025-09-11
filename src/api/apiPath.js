@@ -16,6 +16,10 @@ const API_PATHS = {
   REVIEW_COMPLETE_APP_OFFER:'/appOffers/reviewComplete',
   REVIEW_COMPLETE_TASK_OFFER:'/taskOffers/reviewComplete',
   REVIEW_COMPLETE_REVIEW_OFFER:'/reviewOffers/reviewComplete',
+
+
+  SETTINGS:'/settings',
+  GET_SETTINGS:'/getSettings',
 };
 
 export default API_PATHS;

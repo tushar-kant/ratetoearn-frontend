@@ -13,7 +13,7 @@ function HomePage() {
     withdrawablePoints: 0
   });
   const [isWithdrawing, setIsWithdrawing] = useState(false);
-  const [referralCode,setReferralCode] = useState('ADMIN001'); // User's referral code
+  const [referralCode,setReferralCode] = useState(''); // User's referral code
 
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
@@ -68,8 +68,24 @@ function HomePage() {
     alert('Coming Soon! Daily check-in feature will be available soon.');
   };
 
-  const handleRefer = () => {
-    alert('Coming Soon! Refer & earn feature will be available soon.');
+  const handleRefer = async () => {
+    const shareMessage = `Join Rate To Earn and start earning rewards!\n\nRate services and complete tasks to earn daily.\n\nUse my referral code: ${referralCode} to get started!\n\nVisit ${window.location.origin} to sign up!`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Rate To Earn - Refer & Earn',
+          text: shareMessage,
+          url: window.location.origin,
+        });
+        console.log('Shared successfully');
+      } catch (error) {
+        console.log('Error sharing:', error);
+        alert(`Sharing failed: ${error.message}`);
+      }
+    } else {
+      alert('Web Share API is not supported on this browser. Please copy the referral code and share it manually.');
+    }
   };
 
   useEffect(() => {
@@ -364,9 +380,6 @@ function HomePage() {
                 <polyline points="9,14 11,16 15,12" stroke="currentColor" strokeWidth="2"/>
               </svg>
               Daily Check-in
-              <span style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.6)', marginTop: '2px' }}>
-                Coming Soon
-              </span>
             </button>
           </div>
 
@@ -406,9 +419,6 @@ function HomePage() {
                 <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" strokeWidth="2"/>
               </svg>
               Refer & Earn
-              <span style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.6)', marginTop: '2px' }}>
-                Coming Soon
-              </span>
             </button>
           </div>
         </div>

@@ -35,8 +35,12 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Check localStorage on component mount
   useEffect(() => {
+    // Force page reload if route doesn't exist
+    if (!location.pathname.startsWith('/auth') && !location.pathname.startsWith('/home') && !location.pathname.startsWith('/offers') && !location.pathname.startsWith('/offer') && !location.pathname.startsWith('/task') && !location.pathname.startsWith('/review') && !location.pathname.startsWith('/tasks') && !location.pathname.startsWith('/withdraw') && !location.pathname.startsWith('/games') && !location.pathname.startsWith('/profile') && !location.pathname.startsWith('/settings') && location.pathname !== '/') {
+      window.location.href = '/';
+    }
+
     const checkAuthStatus = () => {
       try {
         const userData = localStorage.getItem('userData');
