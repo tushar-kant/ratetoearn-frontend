@@ -58,13 +58,12 @@ function WithdrawPage() {
       const response = await post(API_PATHS.WITHDRAW, payload);
 
       if (response.status === 201) {
-        // Withdrawal request created successfully
         setShowSuccessModal(true);
-        fetchEarning(userData.phoneNumber); // Fetch updated earning
+        fetchEarning(userData.phoneNumber); 
       } else {
         // Handle error
         setShowSuccessModal(true);
-        fetchEarning(userData.phoneNumber); // Fetch updated earning
+        fetchEarning(userData.phoneNumber); 
 
       }
     } catch (error) {
@@ -374,13 +373,29 @@ function WithdrawPage() {
               </div>
             </div>
 
+            {withdrawableAmount < 100 && (
+              <div
+                className="mb-4"
+                style={{
+                  background: 'rgba(220, 53, 69, 0.1)',
+                  border: '1px solid rgba(220, 53, 69, 0.3)',
+                  borderRadius: '10px',
+                  padding: '15px',
+                  textAlign: 'center',
+                  color: '#dc3545'
+                }}
+              >
+                Minimum withdrawal amount is ₹100.
+              </div>
+            )}
+
             <button
               onClick={handleSubmit}
-              disabled={isSubmitting}
+              disabled={isSubmitting || withdrawableAmount < 100}
               className="w-100"
               style={{
-                background: isSubmitting
-                  ? 'rgba(168, 85, 247, 0.5)'
+                background: (isSubmitting || withdrawableAmount < 100)
+                  ? 'rgba(168, 85, 247, 0.3)'
                   : 'linear-gradient(45deg, #7209b7, #a855f7)',
                 border: 'none',
                 borderRadius: '12px',
@@ -388,9 +403,9 @@ function WithdrawPage() {
                 color: 'white',
                 fontSize: '1.1rem',
                 fontWeight: '600',
-                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                cursor: (isSubmitting || withdrawableAmount < 100) ? 'not-allowed' : 'pointer',
                 transition: 'all 0.3s ease',
-                boxShadow: isSubmitting ? 'none' : '0 0 25px rgba(168, 85, 247, 0.4)',
+                boxShadow: (isSubmitting || withdrawableAmount < 100) ? 'none' : '0 0 25px rgba(168, 85, 247, 0.4)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'

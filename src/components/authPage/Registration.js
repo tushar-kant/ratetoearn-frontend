@@ -9,19 +9,85 @@ function Registration() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
+
+  // Phone number validation function
+  const validatePhoneNumber = (phone) => {
+    // Remove all non-digit characters for validation
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Check if it's empty
+    if (!cleanPhone) {
+      return 'Phone number is required';
+    }
+    
+    // Check for Indian phone number format (10 digits, starting with 6-9)
+    if (cleanPhone.length === 10 && /^[6-9]\d{9}$/.test(cleanPhone)) {
+      return '';
+    }
+    
+    // Check for international format with country code
+    if (cleanPhone.length >= 10 && cleanPhone.length <= 15) {
+      return '';
+    }
+    
+    return 'Please enter a valid phone number';
+  };
+
+  // Format phone number for display
+  const formatPhoneNumber = (value) => {
+    const phone = value.replace(/\D/g, '');
+    
+    if (phone.length <= 10) {
+      // Format as Indian number: XXX XXX XXXX
+      if (phone.length >= 6) {
+        return phone.replace(/(\d{3})(\d{3})(\d{0,4})/, '$1 $2 $3').trim();
+      } else if (phone.length >= 3) {
+        return phone.replace(/(\d{3})(\d{0,3})/, '$1 $2').trim();
+      }
+    }
+    
+    return phone;
+  };
+
+  const handlePhoneChange = (e) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formatted);
+    
+    // Validate phone number
+    const error = validatePhoneNumber(formatted);
+    setPhoneError(error);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate phone number before submission
+    const phoneValidationError = validatePhoneNumber(phoneNumber);
+    if (phoneValidationError) {
+      setPhoneError(phoneValidationError);
+      return;
+    }
     
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
     
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long!');
+      return;
+    }
+    
     setIsLoading(true);
 
+    // Clean phone number for API (remove spaces and formatting)
+    const cleanPhone = phoneNumber.replace(/\D/g, '');
+    
     const registrationData = {
-      phone: phoneNumber,
+      phone: cleanPhone,
       password: password,
       referralCode: referralCode,
     };
@@ -37,6 +103,14 @@ function Registration() {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -144,11 +218,12 @@ function Registration() {
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label 
-                    className="form-label"
+                    className="form-label d-flex align-items-center"
                     style={{ 
                       color: 'rgba(255, 255, 255, 0.9)', 
                       fontWeight: '500',
-                      marginBottom: '8px'
+                      marginBottom: '8px',
+                      textAlign: 'left'
                     }}
                   >
                     Phone Number
@@ -157,13 +232,15 @@ function Registration() {
                     type="text"
                     className="form-control"
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    onChange={handlePhoneChange}
                     required
                     disabled={isLoading}
                     placeholder="Enter your phone number"
                     style={{
                       background: 'rgba(255, 255, 255, 0.1)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      border: phoneError 
+                        ? '1px solid #ef4444' 
+                        : '1px solid rgba(255, 255, 255, 0.2)',
                       borderRadius: '12px',
                       padding: '12px 16px',
                       color: 'white',
@@ -171,58 +248,117 @@ function Registration() {
                       transition: 'all 0.3s ease'
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = '#a855f7';
-                      e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                      if (!phoneError) {
+                        e.target.style.borderColor = '#a855f7';
+                        e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                      }
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                      e.target.style.boxShadow = 'none';
+                      if (!phoneError) {
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        e.target.style.boxShadow = 'none';
+                      }
                     }}
                   />
+                  {phoneError && (
+                    <div style={{ 
+                      color: '#ef4444', 
+                      fontSize: '0.85rem', 
+                      marginTop: '5px',
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ marginRight: '6px' }}>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                        <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" strokeWidth="2"/>
+                        <line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      {phoneError}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="mb-3">
                   <label 
-                    className="form-label"
+                    className="form-label d-flex align-items-center"
                     style={{ 
                       color: 'rgba(255, 255, 255, 0.9)', 
                       fontWeight: '500',
-                      marginBottom: '8px'
+                      marginBottom: '8px',
+                      textAlign: 'left'
                     }}
                   >
                     Password
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    disabled={isLoading}
-                    placeholder="Create a strong password"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      borderRadius: '12px',
-                      padding: '12px 16px',
-                      color: 'white',
-                      fontSize: '1rem',
-                      transition: 'all 0.3s ease'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#a855f7';
-                      e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                  />
+                  <div className="position-relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      disabled={isLoading}
+                      placeholder="Create a strong password"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '12px',
+                        padding: '12px 50px 12px 16px',
+                        color: 'white',
+                        fontSize: '1rem',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#a855f7';
+                        e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      disabled={isLoading}
+                      style={{
+                        position: 'absolute',
+                        right: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'none',
+                        border: 'none',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        transition: 'color 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.color = '#a855f7';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.color = 'rgba(255, 255, 255, 0.6)';
+                      }}
+                    >
+                      {showPassword ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="mb-3">
                   <label 
-                    className="form-label"
+                    className="form-label d-flex align-items-center"
                     style={{ 
                       color: 'rgba(255, 255, 255, 0.9)', 
                       fontWeight: '500',
@@ -231,32 +367,70 @@ function Registration() {
                   >
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    disabled={isLoading}
-                    placeholder="Confirm your password"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      borderRadius: '12px',
-                      padding: '12px 16px',
-                      color: 'white',
-                      fontSize: '1rem',
-                      transition: 'all 0.3s ease'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#a855f7';
-                      e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                  />
+                  <div className="position-relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      className="form-control"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      disabled={isLoading}
+                      placeholder="Confirm your password"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '12px',
+                        padding: '12px 50px 12px 16px',
+                        color: 'white',
+                        fontSize: '1rem',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#a855f7';
+                        e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleConfirmPasswordVisibility}
+                      disabled={isLoading}
+                      style={{
+                        position: 'absolute',
+                        right: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'none',
+                        border: 'none',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        transition: 'color 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.color = '#a855f7';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.color = 'rgba(255, 255, 255, 0.6)';
+                      }}
+                    >
+                      {showConfirmPassword ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="mb-4">
@@ -265,7 +439,8 @@ function Registration() {
                     style={{ 
                       color: 'rgba(255, 255, 255, 0.9)', 
                       fontWeight: '500',
-                      marginBottom: '8px'
+                      marginBottom: '8px',
+                      textAlign: 'left'
                     }}
                   >
                     Referral Code
@@ -310,9 +485,9 @@ function Registration() {
                 <button 
                   type="submit" 
                   className="w-100 d-flex align-items-center justify-content-center"
-                  disabled={isLoading}
+                  disabled={isLoading || phoneError}
                   style={{
-                    background: isLoading 
+                    background: (isLoading || phoneError)
                       ? 'rgba(114, 9, 183, 0.6)' 
                       : 'linear-gradient(45deg, #7209b7, #a855f7)',
                     border: 'none',
@@ -321,21 +496,21 @@ function Registration() {
                     color: 'white',
                     fontSize: '1.1rem',
                     fontWeight: '600',
-                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    cursor: (isLoading || phoneError) ? 'not-allowed' : 'pointer',
                     transition: 'all 0.3s ease',
-                    boxShadow: isLoading 
+                    boxShadow: (isLoading || phoneError)
                       ? 'none' 
                       : '0 0 25px rgba(114, 9, 183, 0.4)',
-                    transform: isLoading ? 'scale(0.98)' : 'scale(1)'
+                    transform: (isLoading || phoneError) ? 'scale(0.98)' : 'scale(1)'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isLoading) {
+                    if (!isLoading && !phoneError) {
                       e.target.style.boxShadow = '0 0 35px rgba(168, 85, 247, 0.6)';
                       e.target.style.transform = 'translateY(-2px) scale(1.02)';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (!isLoading) {
+                    if (!isLoading && !phoneError) {
                       e.target.style.boxShadow = '0 0 25px rgba(114, 9, 183, 0.4)';
                       e.target.style.transform = 'translateY(0) scale(1)';
                     }
