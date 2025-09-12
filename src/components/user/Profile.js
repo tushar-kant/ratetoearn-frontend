@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { post } from '../api/apiService';
-import API_PATHS from '../api/apiPath';
+import { post } from '../../api/apiService';
+import API_PATHS from '../../api/apiPath';
 
 function Profile() {
   const [userData, setUserData] = useState(null);

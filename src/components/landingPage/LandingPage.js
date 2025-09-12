@@ -10,7 +10,7 @@ function LandingPage() {
     <>
       <style>{`
         body {
-          background: linear-gradient(135deg, #3A006E 0%, #5A189A 40%, #000000 100%);
+          background: linear-gradient(135deg, #0A0E2A 0%, #1A1F4B 40%, #050716 100%);
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           min-height: 100vh;
           overflow-x: hidden;
@@ -18,10 +18,10 @@ function LandingPage() {
         }
         
         .hero-section {
-          background: linear-gradient(135deg, rgba(58, 0, 110, 0.95), rgba(90, 24, 154, 0.85), rgba(0, 0, 0, 0.95));
+          background: linear-gradient(135deg, rgba(10, 14, 42, 0.95), rgba(26, 31, 75, 0.85), rgba(5, 7, 22, 0.95));
           backdrop-filter: blur(20px);
-          border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+          border-bottom: 2px solid rgba(65, 105, 225, 0.2);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
           position: relative;
           min-height: 70vh;
           display: flex;
@@ -35,7 +35,7 @@ function LandingPage() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="90" cy="10" r="1" fill="rgba(255,255,255,0.06)"/><circle cx="10" cy="90" r="2" fill="rgba(255,255,255,0.04)"/></svg>');
+          background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(65, 105, 225, 0.15)"/><circle cx="80" cy="40" r="1" fill="rgba(70, 130, 180, 0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(30, 144, 255, 0.12)"/><circle cx="90" cy="10" r="1" fill="rgba(100, 149, 237, 0.1)"/><circle cx="10" cy="90" r="2" fill="rgba(123, 104, 238, 0.08)"/></svg>');
           animation: sparkle 4s linear infinite;
           z-index: 1;
         }
@@ -53,12 +53,12 @@ function LandingPage() {
         .hero-title {
           font-size: 5rem;
           font-weight: 900;
-          background: linear-gradient(45deg, #ffffff, #9D4EDD, #C77DFF, #E0AAFF);
+          background: linear-gradient(45deg, #ffffff, #4A6FDC, #6B8EFF, #A2B6FF);
           background-size: 300% 300%;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: heroGradient 3s ease infinite;
-          text-shadow: 0 0 50px rgba(157, 78, 221, 0.5);
+          text-shadow: 0 0 50px rgba(74, 111, 220, 0.5);
         }
         
         @keyframes heroGradient {
@@ -94,7 +94,7 @@ function LandingPage() {
         .money-icon {
           font-size: 6rem;
           animation: bounce 2s infinite;
-          filter: drop-shadow(0 0 20px rgba(157, 78, 221, 0.7));
+          filter: drop-shadow(0 0 20px rgba(74, 111, 220, 0.7));
         }
         
         @keyframes bounce {
@@ -104,17 +104,17 @@ function LandingPage() {
         }
         
         .cta-section {
-          background: rgba(0, 0, 0, 0.4);
+          background: rgba(8, 12, 33, 0.5);
           backdrop-filter: blur(15px);
-          border: 1px solid rgba(255, 255, 255, 0.15);
+          border: 1px solid rgba(65, 105, 225, 0.2);
           border-radius: 30px;
           padding: 3rem 2rem;
           margin: 2rem 0;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
         
         .btn-primary-custom {
-          background: linear-gradient(135deg, #7B2CBF 0%, #5A189A 100%);
+          background: linear-gradient(135deg, #3A5FCD 0%, #2A4CB0 100%);
           border: none;
           border-radius: 12px;
           padding: 16px 32px;
@@ -127,21 +127,21 @@ function LandingPage() {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          box-shadow: 0 4px 15px rgba(123, 44, 191, 0.5);
+          box-shadow: 0 4px 15px rgba(58, 95, 205, 0.5);
           position: relative;
           overflow: hidden;
         }
         
         .btn-primary-custom:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(123, 44, 191, 0.7);
+          box-shadow: 0 8px 25px rgba(58, 95, 205, 0.7);
           color: white;
           text-decoration: none;
         }
         
         .btn-secondary-custom {
           background: transparent;
-          border: 2px solid rgba(255, 255, 255, 0.5);
+          border: 2px solid rgba(65, 105, 225, 0.5);
           border-radius: 12px;
           padding: 14px 32px;
           font-weight: 600;
@@ -158,16 +158,16 @@ function LandingPage() {
         }
         
         .btn-secondary-custom:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.9);
+          background: rgba(65, 105, 225, 0.15);
+          border-color: rgba(100, 149, 237, 0.9);
           transform: translateY(-2px);
           color: white;
           text-decoration: none;
         }
         
         .earn-card {
-          background: linear-gradient(145deg, rgba(35, 0, 70, 0.9), rgba(20, 0, 40, 0.95));
-          border: 1px solid rgba(123, 44, 191, 0.4);
+          background: linear-gradient(145deg, rgba(15, 20, 50, 0.9), rgba(10, 15, 40, 0.95));
+          border: 1px solid rgba(65, 105, 225, 0.3);
           border-radius: 25px;
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
@@ -183,7 +183,7 @@ function LandingPage() {
           left: 0;
           right: 0;
           height: 5px;
-          background: linear-gradient(90deg, #9D4EDD, #7B2CBF);
+          background: linear-gradient(90deg, #4A6FDC, #3A5FCD);
           transform: scaleX(0);
           transition: transform 0.4s ease;
         }
@@ -194,15 +194,15 @@ function LandingPage() {
         
         .earn-card:hover {
           transform: translateY(-15px) scale(1.03);
-          box-shadow: 0 25px 50px rgba(123, 44, 191, 0.5);
-          background: linear-gradient(145deg, rgba(45, 0, 90, 0.95), rgba(25, 0, 50, 0.98));
+          box-shadow: 0 25px 50px rgba(58, 95, 205, 0.5);
+          background: linear-gradient(145deg, rgba(20, 30, 70, 0.95), rgba(15, 25, 60, 0.98));
         }
         
         .earn-icon {
           font-size: 4rem;
           margin-bottom: 1rem;
           animation: iconFloat 3s ease-in-out infinite;
-          filter: drop-shadow(0 0 10px rgba(157, 78, 221, 0.6));
+          filter: drop-shadow(0 0 10px rgba(74, 111, 220, 0.6));
         }
         
         @keyframes iconFloat {
@@ -212,8 +212,8 @@ function LandingPage() {
         }
         
         .stats-card {
-          background: linear-gradient(145deg, rgba(123, 44, 191, 0.25), rgba(90, 24, 154, 0.2));
-          border: 2px solid rgba(157, 78, 221, 0.4);
+          background: linear-gradient(145deg, rgba(58, 95, 205, 0.25), rgba(42, 76, 176, 0.2));
+          border: 2px solid rgba(74, 111, 220, 0.4);
           border-radius: 20px;
           backdrop-filter: blur(15px);
           color: white;
@@ -230,7 +230,7 @@ function LandingPage() {
           left: -50%;
           width: 200%;
           height: 200%;
-          background: radial-gradient(circle, rgba(157, 78, 221, 0.15) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(74, 111, 220, 0.15) 0%, transparent 70%);
           animation: shimmer 4s linear infinite;
         }
         
@@ -242,7 +242,7 @@ function LandingPage() {
         .stats-number {
           font-size: 3.5rem;
           font-weight: 900;
-          background: linear-gradient(45deg, #ffffff, #C77DFF);
+          background: linear-gradient(45deg, #ffffff, #6B8EFF);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           position: relative;
@@ -262,7 +262,7 @@ function LandingPage() {
           font-size: 2.5rem;
           animation: floatCoin 8s linear infinite;
           opacity: 0;
-          filter: drop-shadow(0 0 10px rgba(157, 78, 221, 0.8));
+          filter: drop-shadow(0 0 10px rgba(74, 111, 220, 0.8));
         }
         
         @keyframes floatCoin {
@@ -343,7 +343,7 @@ function LandingPage() {
                 </p>
               </div>
               <div className="col-lg-4 text-center">
-                <div className="mobile-icon" style={{fontSize: '8rem', filter: 'drop-shadow(0 0 20px rgba(157, 78, 221, 0.6))'}}>
+                <div className="mobile-icon" style={{fontSize: '8rem', filter: 'drop-shadow(0 0 20px rgba(74, 111, 220, 0.6))'}}>
                   📱
                 </div>
               </div>
@@ -419,14 +419,12 @@ function LandingPage() {
                 Version 1.0.0 | Contact: support@tasky.com
               </p>
               <p className="small text-white-75">
-                Start earning today - No investment required! 💜
+                Start earning today - No investment required! 💙
               </p>
             </div>
           </div>
         </div>
       </div>
-
-    
     </>
   );
 }

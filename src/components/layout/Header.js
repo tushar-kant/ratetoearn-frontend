@@ -191,7 +191,7 @@ function Header() {
                   }
                 })()}
                 <hr style={{ margin: '0', border: 'none', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }} />
-                {isAndroid() && (
+                {!isAndroid() && (
                   <a
                     href="/app-debug.apk"
                     className="w-100 text-start px-3 py-2 border-0 text-decoration-none d-block"

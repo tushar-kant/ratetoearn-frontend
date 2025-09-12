@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { get } from '../api/apiService';
-import API_PATHS from '../api/apiPath';
+import { get } from '../../api/apiService';
+import API_PATHS from '../../api/apiPath';
 
-function ReviewPage() {
+function TasksPage() {
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('earning');
   const [tasks, setTasks] = useState([]);
@@ -15,7 +15,7 @@ function ReviewPage() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const data = await get(API_PATHS.REVIEW_OFFERS);
+        const data = await get(API_PATHS.TASK_OFFERS);
         setTasks(data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -60,15 +60,9 @@ function ReviewPage() {
   const getTaskIcon = (type) => {
     switch(type) {
       case 'google': return '🔍';
-      case 'app': return '📱';
-      case 'trustpilot': return '⭐';
+      case 'youtube': return '📺';
       default: return '📝';
     }
-  };
-
-  const handleTaskClick = (taskId) => {
-    // Navigate to task details - replace with your routing logic
-    console.log(`Navigate to review task ${taskId}`);
   };
 
   return (
@@ -82,7 +76,6 @@ function ReviewPage() {
           background: linear-gradient(145deg, #ffffff 0%, #fefcff 100%);
           box-shadow: 0 2px 15px rgba(118, 75, 162, 0.1);
           transition: all 0.3s ease;
-          cursor: pointer;
         }
         .purple-card:hover {
           transform: translateY(-8px);
@@ -119,22 +112,15 @@ function ReviewPage() {
           border-color: #b794f6;
           box-shadow: 0 0 0 0.2rem rgba(183, 148, 246, 0.25);
         }
-        .review-type-google {
+        .task-type-google {
           background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
           color: white;
           font-size: 0.75rem;
           padding: 0.25rem 0.75rem;
           border-radius: 50px;
         }
-        .review-type-app {
-          background: linear-gradient(135deg, #007aff 0%, #34c759 100%);
-          color: white;
-          font-size: 0.75rem;
-          padding: 0.25rem 0.75rem;
-          border-radius: 50px;
-        }
-        .review-type-trustpilot {
-          background: linear-gradient(135deg, #00b67a 0%, #73d13d 100%);
+        .task-type-youtube {
+          background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
           color: white;
           font-size: 0.75rem;
           padding: 0.25rem 0.75rem;
@@ -159,21 +145,17 @@ function ReviewPage() {
         .star-rating {
           color: #ffd700;
         }
-        .review-title {
+        .task-title {
           color: #553c9a;
           font-weight: 600;
         }
-        .review-description {
+        .task-description {
           color: #6b7280;
           font-size: 0.9rem;
         }
         .time-estimate {
           color: #9ca3af;
           font-size: 0.8rem;
-        }
-        .reviews-count {
-          color: #6b7280;
-          font-size: 0.85rem;
         }
         .page-bg {
           background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -186,7 +168,7 @@ function ReviewPage() {
           {/* Header with filters */}
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
             <div className="mb-3 mb-md-0">
-              <h2 className="mb-1 text-dark">Review Tasks</h2>
+              <h2 className="mb-1 text-dark">Tasks</h2>
               <span className="text-muted">{filteredTasks.length} results</span>
             </div>
             
@@ -210,48 +192,42 @@ function ReviewPage() {
               className={`btn filter-btn ${filter === 'all' ? 'active' : ''}`}
               onClick={() => setFilter('all')}
             >
-              All Reviews
+              All Tasks
             </button>
             <button 
               className={`btn filter-btn ${filter === 'google' ? 'active' : ''}`}
               onClick={() => setFilter('google')}
             >
-              🔍 Google Reviews
+              🔍 Google Tasks
             </button>
             <button 
-              className={`btn filter-btn ${filter === 'app' ? 'active' : ''}`}
-              onClick={() => setFilter('app')}
+              className={`btn filter-btn ${filter === 'youtube' ? 'active' : ''}`}
+              onClick={() => setFilter('youtube')}
             >
-              📱 App Reviews
-            </button>
-            <button 
-              className={`btn filter-btn ${filter === 'trustpilot' ? 'active' : ''}`}
-              onClick={() => setFilter('trustpilot')}
-            >
-              ⭐ Trustpilot
+              📺 YouTube Tasks
             </button>
           </div>
           
           {loading ? (
-            <p>Loading reviews...</p>
+            <p>Loading tasks...</p>
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
-            /* Reviews Grid */
+            /* Tasks Grid */
             <div className="row">
               {filteredTasks.map(task => (
                 <div key={task._id} className="col-md-6 col-lg-4 mb-4">
-                 <Link 
-                  to={`/review/${task._id}`} 
-                  className="card text-decoration-none text-dark h-100 purple-card"
-                >
+                  <Link
+                    to={`/task/${task._id}`}
+                    className="card text-decoration-none text-dark h-100 purple-card"
+                  >
                     <div className="card-body p-4">
-                      {/* Header with review type and difficulty */}
+                      {/* Header with task type and difficulty */}
                       <div className="d-flex justify-content-between align-items-start mb-3">
                         <div className="d-flex align-items-center gap-2">
                           <span style={{ fontSize: '1.5rem' }}>{getTaskIcon(task.type)}</span>
-                          <span className={`review-type-${task.type}`}>
-                            {task.type === 'app' ? 'App Store' : task.type.charAt(0).toUpperCase() + task.type.slice(1)}
+                          <span className={task.type === 'google' ? 'task-type-google' : 'task-type-youtube'}>
+                            {task.type.charAt(0).toUpperCase() + task.type.slice(1)}
                           </span>
                         </div>
                         <span className={getDifficultyClass(task.difficulty)}>
@@ -268,10 +244,10 @@ function ReviewPage() {
 
                       {/* Title and Description */}
                       <div className="mb-4">
-                        <h5 className="card-title review-title mb-2">{task.name}</h5>
-                        <p className="card-text review-description mb-3">{task.description}</p>
+                        <h5 className="card-title task-title mb-2">{task.name}</h5>
+                        <p className="card-text task-description mb-3">{task.description}</p>
 
-                        {/* Rating, Reviews Count and Time */}
+                        {/* Rating and Time */}
                         <div className="d-flex justify-content-between align-items-center mb-2">
                           <div className="d-flex align-items-center">
                             <div className="star-rating me-2">
@@ -284,22 +260,15 @@ function ReviewPage() {
                             ⏱️ {task.timeEstimate}
                           </span>
                         </div>
-
-                        {/* Reviews Count */}
-                        <div className="mb-2">
-                          <span className="reviews-count">
-                            📊 {task.reviews?.toLocaleString() ?? 0} existing reviews
-                          </span>
-                        </div>
                       </div>
 
                       {/* Footer with earnings and arrow */}
                       <div className="d-flex justify-content-between align-items-center mt-auto">
                         <span className="earnings-badge">
-                          {task.earning?.toFixed(2) ?? 0}coins
+                          {task.earning?.toFixed(2) ?? 0} coins
                         </span>
                         <div className="d-flex align-items-center">
-                          <span className="text-muted me-2 small">Start Review</span>
+                          <span className="text-muted me-2 small">Start Task</span>
                           <i className="fas fa-chevron-right" style={{ color: '#b794f6' }}></i>
                         </div>
                       </div>
@@ -312,8 +281,8 @@ function ReviewPage() {
 
           {filteredTasks.length === 0 && !loading && !error && (
             <div className="text-center py-5">
-              <div style={{ fontSize: '4rem' }} className="mb-4">📝</div>
-              <h3 className="fw-semibold text-muted mb-2">No review tasks found</h3>
+              <div style={{ fontSize: '4rem' }} className="mb-4">📋</div>
+              <h3 className="fw-semibold text-muted mb-2">No tasks found</h3>
               <p className="text-muted">Try selecting a different filter</p>
             </div>
           )}
@@ -323,4 +292,4 @@ function ReviewPage() {
   );
 }
 
-export default ReviewPage;
+export default TasksPage;

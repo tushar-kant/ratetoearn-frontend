@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getReviewDetails, completeReviewReview } from '../api/apiService';
+import { getOfferDetails } from '../../api/apiService';
+import { completeReview } from '../../api/apiService'; // Import the new API function
 import { ChevronRight, Download, Clock, Trophy, CheckCircle, Info, Star, TrendingUp, Gift, Shield, Zap, AlertCircle } from 'lucide-react';
 
-function ReviewDetails() {
+function OfferDetails() {
   const { id } = useParams();
   const [offer, setOffer] = useState(null);
   const [startTask, setStartTask] = useState(false);
@@ -13,10 +14,10 @@ function ReviewDetails() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const fetchReviewDetails = async () => {
+    const fetchOfferDetails = async () => {
       try {
-        const data = await getReviewDetails(id);
-        console.log(data,"data")
+        const data = await getOfferDetails(id);
+        console.log(data, "data")
         setOffer(data);
       } catch (error) {
         console.error("Error fetching offer details:", error);
@@ -24,7 +25,7 @@ function ReviewDetails() {
       }
     };
 
-    fetchReviewDetails();
+    fetchOfferDetails();
   }, [id]);
 
   useEffect(() => {
@@ -39,21 +40,21 @@ function ReviewDetails() {
   };
 
   const handleStartTaskConfirm = async () => {
-    setShowStartModal(false);
-    // Redirect to primary link if it exists
       try {
-       const taskId = id;
+      const taskId = id;
       const userData = JSON.parse(localStorage.getItem('userData'));
       const phone = userData?.phoneNumber;
       if (!phone) {
         console.error("Phone number not found in local storage");
         return;
       }
-      const response = await completeReviewReview(taskId, phone);
-      console.log("Review completed successfully", response);
+      await completeReview(taskId, phone);
+      console.log("Review completed successfully");
     } catch (error) {
       console.error("Error completing review:", error);
     }
+    setShowStartModal(false);
+    // Redirect to primary link if it exists
     if (offer?.primaryLink) {
       window.open(offer.primaryLink, '_blank');
     }
@@ -219,7 +220,7 @@ function ReviewDetails() {
               </div>
             </div>
 
-         
+
           </div>
 
           {/* Modals */}
@@ -277,6 +278,7 @@ function ReviewDetails() {
                     <div className="alert alert-success mb-3">
                       <div className="text-center">
                         <p className="small mb-1">Your Reward</p>
+                        <p className="small mb-1">Your Reward</p>
                         <p className="h4 fw-bold text-success mb-1">write coins {offer?.earning}</p>
                         <p className="small mb-0">Will be credited within 24 hours</p>
                       </div>
@@ -308,4 +310,4 @@ function ReviewDetails() {
   );
 }
 
-export default ReviewDetails;
+export default OfferDetails;

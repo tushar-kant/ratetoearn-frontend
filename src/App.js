@@ -1,25 +1,30 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import Login from './components/Login';
-import Registration from './components/Registration';
-import Header from './components/Header';
-import Footer from './components/layout/Footer';
-import OfferPage from './components/OfferPage';
-import OfferDetails from './components/OfferDetails';
-
-import TasksPage from './components/TasksPage';
-import Games from './components/Games';
 import { useState, useEffect } from 'react';
-import ReviewPage from './components/Review';
-import Profile from './components/Profile';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom';
+
+import HomePage from './components/homePage/HomePage';
+import Login from './components/authPage/Login';
+import Registration from './components/authPage/Registration';
+
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+
+import OfferPage from './components/offerPage/OfferPage';
+import OfferDetails from './components/offerPage/OfferDetails';
+
+import TasksPage from './components/taskPage/TasksPage';
+import TaskDetails from './components/taskPage/TaskDetails';
+
+import Games from './components/Games';
+import ReviewPage from './components/reviewPage/Review';
+import ReviewDetails from './components/reviewPage/ReviewDetails';
+
+import Profile from './components/user/Profile';
 import Settings from './components/Setting';
 import WithdrawPage from './components/WithdrawPage';
-import TaskDetails from './components/TaskDetails';
-import ReviewDetails from './components/ReviewDetails';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/landingPage/LandingPage';
 
 
 // Protected Route Component
@@ -231,14 +236,13 @@ function AppContent() {
           }
         />
         {/* Redirect root path */}
-        <Route
+        {/* <Route
           path="/"
           element={
             <Navigate to={isLoggedIn ? "/home" : "/auth/login"} replace />
           }
-        />
-
-        {/* <Route
+        /> */}
+        <Route
           path="/"
           element={
             isLoggedIn ? (
@@ -247,7 +251,7 @@ function AppContent() {
               <LandingPage />
             )
           }
-        /> */}
+        />
         <Route
           path="/landing"
           element={<LandingPage />}

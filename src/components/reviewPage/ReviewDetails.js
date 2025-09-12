@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTaskDetails, completeTaskReview } from '../api/apiService';
+import { getReviewDetails, completeReviewReview } from '../../api/apiService';
 import { ChevronRight, Download, Clock, Trophy, CheckCircle, Info, Star, TrendingUp, Gift, Shield, Zap, AlertCircle } from 'lucide-react';
 
-function TaskDetails() {
+function ReviewDetails() {
   const { id } = useParams();
   const [offer, setOffer] = useState(null);
   const [startTask, setStartTask] = useState(false);
@@ -13,9 +13,9 @@ function TaskDetails() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const fetchTaskDetails = async () => {
+    const fetchReviewDetails = async () => {
       try {
-        const data = await getTaskDetails(id);
+        const data = await getReviewDetails(id);
         console.log(data,"data")
         setOffer(data);
       } catch (error) {
@@ -24,7 +24,7 @@ function TaskDetails() {
       }
     };
 
-    fetchTaskDetails();
+    fetchReviewDetails();
   }, [id]);
 
   useEffect(() => {
@@ -39,21 +39,21 @@ function TaskDetails() {
   };
 
   const handleStartTaskConfirm = async () => {
-     try {
-      const taskId = id;
+    setShowStartModal(false);
+    // Redirect to primary link if it exists
+      try {
+       const taskId = id;
       const userData = JSON.parse(localStorage.getItem('userData'));
       const phone = userData?.phoneNumber;
       if (!phone) {
         console.error("Phone number not found in local storage");
         return;
       }
-      const response = await completeTaskReview(taskId, phone);
+      const response = await completeReviewReview(taskId, phone);
       console.log("Review completed successfully", response);
     } catch (error) {
       console.error("Error completing review:", error);
     }
-    setShowStartModal(false);
-    // Redirect to primary link if it exists
     if (offer?.primaryLink) {
       window.open(offer.primaryLink, '_blank');
     }
@@ -61,7 +61,7 @@ function TaskDetails() {
 
   const handleCompleteTask = async () => {
     setShowCompletionModal(true);
-   
+  
   };
 
   const toggleStep = (index) => {
@@ -308,4 +308,4 @@ function TaskDetails() {
   );
 }
 
-export default TaskDetails;
+export default ReviewDetails;

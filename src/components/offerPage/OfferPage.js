@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { get } from '../api/apiService';
-import API_PATHS from '../api/apiPath';
+import { get } from '../../api/apiService';
+import API_PATHS from '../../api/apiPath';
 
 function OfferPage() {
   const [offers, setOffers] = useState([]);

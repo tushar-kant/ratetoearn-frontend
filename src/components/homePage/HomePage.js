@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { get, post } from '../api/apiService';
-import API_PATHS from '../api/apiPath';
+import { get, post } from '../../api/apiService';
+import API_PATHS from '../../api/apiPath';
 import { useNavigate } from "react-router-dom";
 
 

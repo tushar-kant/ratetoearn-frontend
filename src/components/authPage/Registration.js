@@ -1,40 +1,38 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { post } from '../api/apiService';
-import API_PATHS from '../api/apiPath';
+import { Link } from 'react-router-dom';
+import { post } from '../../api/apiService';
+import API_PATHS from '../../api/apiPath';
 
-function Login({ onLogin }) {
+function Registration() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    
     setIsLoading(true);
 
-    const loginData = {
+    const registrationData = {
       phone: phoneNumber,
       password: password,
+      referralCode: referralCode,
     };
 
-    post(API_PATHS.LOGIN, loginData)
+    post(API_PATHS.REGISTER, registrationData)
       .then((response) => {
-        // Create user data object
-        const userData = {
-          phoneNumber: phoneNumber,
-          loginTime: new Date().toISOString(),
-          sessionId: Math.random().toString(36).substr(2, 9),
-          userAgent: navigator.userAgent,
-          lastLoginIP: 'localhost' // In real app, you'd get this from server
-        };
-        
-        alert('Login successful!');
-        onLogin(userData); // Pass user data to parent component
+        alert('Registration successful!');
       })
       .catch((error) => {
-        console.error('Login failed:', error);
-        alert('Invalid credentials.');
+        console.error('Registration failed:', error);
+        alert('Registration failed. Please try again.');
       })
       .finally(() => {
         setIsLoading(false);
@@ -51,7 +49,7 @@ function Login({ onLogin }) {
     >
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-md-5 col-lg-4">
+          <div className="col-md-6 col-lg-5">
             <div 
               className="position-relative"
               style={{
@@ -68,16 +66,16 @@ function Login({ onLogin }) {
                 className="position-absolute"
                 style={{
                   top: '-10px',
-                  right: '20px',
-                  width: '60px',
-                  height: '60px',
+                  left: '20px',
+                  width: '80px',
+                  height: '80px',
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(114, 9, 183, 0.3) 0%, transparent 70%)',
-                  filter: 'blur(15px)'
+                  background: 'radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%)',
+                  filter: 'blur(20px)'
                 }}
               />
               
-              {/* Login Icon */}
+              {/* Registration Icon */}
               <div className="text-center mb-4">
                 <div 
                   className="d-inline-flex align-items-center justify-content-center mb-3"
@@ -91,24 +89,33 @@ function Login({ onLogin }) {
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path 
-                      d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15" 
+                      d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" 
                       stroke="white" 
                       strokeWidth="2" 
                       strokeLinecap="round" 
                       strokeLinejoin="round"
                     />
-                    <polyline 
-                      points="10,17 15,12 10,7" 
+                    <circle 
+                      cx="8.5" 
+                      cy="7" 
+                      r="4" 
                       stroke="white" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
+                      strokeWidth="2"
                     />
                     <line 
-                      x1="15" 
-                      y1="12" 
-                      x2="3" 
-                      y2="12" 
+                      x1="20" 
+                      y1="8" 
+                      x2="20" 
+                      y2="14" 
+                      stroke="white" 
+                      strokeWidth="2" 
+                      strokeLinecap="round"
+                    />
+                    <line 
+                      x1="23" 
+                      y1="11" 
+                      x2="17" 
+                      y2="11" 
                       stroke="white" 
                       strokeWidth="2" 
                       strokeLinecap="round"
@@ -127,14 +134,12 @@ function Login({ onLogin }) {
                     fontWeight: '600'
                   }}
                 >
-                  Welcome Back
+                  Create Account
                 </h2>
                 <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.95rem' }}>
-                  Sign in to your account
+                  Join us and start earning today
                 </p>
               </div>
-
-
 
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
@@ -148,37 +153,35 @@ function Login({ onLogin }) {
                   >
                     Phone Number
                   </label>
-                  <div className="position-relative">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                      disabled={isLoading}
-                      placeholder="Enter your phone number"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        borderRadius: '12px',
-                        padding: '12px 16px',
-                        color: 'white',
-                        fontSize: '1rem',
-                        transition: 'all 0.3s ease'
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = '#a855f7';
-                        e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                        e.target.style.boxShadow = 'none';
-                      }}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    required
+                    disabled={isLoading}
+                    placeholder="Enter your phone number"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      color: 'white',
+                      fontSize: '1rem',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#a855f7';
+                      e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  />
                 </div>
                 
-                <div className="mb-4">
+                <div className="mb-3">
                   <label 
                     className="form-label"
                     style={{ 
@@ -196,7 +199,94 @@ function Login({ onLogin }) {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    placeholder="Enter your password"
+                    placeholder="Create a strong password"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      color: 'white',
+                      fontSize: '1rem',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#a855f7';
+                      e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  />
+                </div>
+                
+                <div className="mb-3">
+                  <label 
+                    className="form-label"
+                    style={{ 
+                      color: 'rgba(255, 255, 255, 0.9)', 
+                      fontWeight: '500',
+                      marginBottom: '8px'
+                    }}
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    disabled={isLoading}
+                    placeholder="Confirm your password"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      color: 'white',
+                      fontSize: '1rem',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#a855f7';
+                      e.target.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.3)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  />
+                </div>
+                
+                <div className="mb-4">
+                  <label 
+                    className="form-label d-flex align-items-center"
+                    style={{ 
+                      color: 'rgba(255, 255, 255, 0.9)', 
+                      fontWeight: '500',
+                      marginBottom: '8px'
+                    }}
+                  >
+                    Referral Code
+                    <span 
+                      style={{ 
+                        color: 'rgba(255, 255, 255, 0.5)', 
+                        fontSize: '0.85rem',
+                        marginLeft: '8px',
+                        fontWeight: '400'
+                      }}
+                    >
+                      (Optional)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value)}
+                    disabled={isLoading}
+                    placeholder="Enter referral code if you have one"
                     style={{
                       background: 'rgba(255, 255, 255, 0.1)',
                       border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -264,19 +354,19 @@ function Login({ onLogin }) {
                           animation: 'spin 1s linear infinite'
                         }}
                       />
-                      Signing In...
+                      Creating Account...
                     </>
                   ) : (
-                    'Sign In'
+                    'Create Account'
                   )}
                 </button>
               </form>
               
               <div className="text-center mt-4">
                 <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  Don't have an account?{' '}
+                  Already have an account?{' '}
                   <Link 
-                    to="/auth/registration" 
+                    to="/auth/login" 
                     style={{
                       color: '#a855f7',
                       textDecoration: 'none',
@@ -292,7 +382,7 @@ function Login({ onLogin }) {
                       e.target.style.textDecoration = 'none';
                     }}
                   >
-                    Register here
+                    Sign in here
                   </Link>
                 </p>
               </div>
@@ -320,4 +410,4 @@ function Login({ onLogin }) {
   );
 }
 
-export default Login;
+export default Registration;
