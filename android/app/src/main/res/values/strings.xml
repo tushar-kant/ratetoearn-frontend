@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">taskrush</string>
+    <string name="title_activity_main">taskrush</string>
+    <string name="package_name">taskrush.online</string>
+    <string name="custom_url_scheme">taskrush.online</string>
+</resources>

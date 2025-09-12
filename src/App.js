@@ -231,14 +231,14 @@ function AppContent() {
           }
         />
         {/* Redirect root path */}
-        {/* <Route
+        <Route
           path="/"
           element={
             <Navigate to={isLoggedIn ? "/home" : "/auth/login"} replace />
           }
-        /> */}
+        />
 
-        <Route
+        {/* <Route
           path="/"
           element={
             isLoggedIn ? (
@@ -247,7 +247,7 @@ function AppContent() {
               <LandingPage />
             )
           }
-        />
+        /> */}
         <Route
           path="/landing"
           element={<LandingPage />}
