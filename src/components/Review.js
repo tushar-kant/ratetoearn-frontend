@@ -296,7 +296,7 @@ function ReviewPage() {
                       {/* Footer with earnings and arrow */}
                       <div className="d-flex justify-content-between align-items-center mt-auto">
                         <span className="earnings-badge">
-                          ${task.earning?.toFixed(2) ?? 0}
+                          {task.earning?.toFixed(2) ?? 0}coins
                         </span>
                         <div className="d-flex align-items-center">
                           <span className="text-muted me-2 small">Start Review</span>

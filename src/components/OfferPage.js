@@ -201,8 +201,8 @@ function OfferPage() {
                       {/* Footer with price and arrow */}
                       <div className="d-flex justify-content-between align-items-center mt-auto">
                         <span className="price-badge">
-                          ${offer.earning}
-                        </span>
+                          {offer.earning?.toFixed(2) ?? 0} coins
+                        </span> 
                         <div className="d-flex align-items-center">
                           <span className="text-muted me-2 small">View Details</span>
                           <i className="fas fa-chevron-right" style={{ color: '#b794f6' }}></i>

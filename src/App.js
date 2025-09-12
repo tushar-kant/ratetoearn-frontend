@@ -19,6 +19,7 @@ import Settings from './components/Setting';
 import WithdrawPage from './components/WithdrawPage';
 import TaskDetails from './components/TaskDetails';
 import ReviewDetails from './components/ReviewDetails';
+import LandingPage from './components/LandingPage';
 
 
 // Protected Route Component
@@ -121,11 +122,9 @@ function AppContent() {
     );
   }
 
-  const showHeader = location.pathname !== '/auth/login' && location.pathname !== '/auth/registration';
-
   return (
     <div className="App">
-      {showHeader && <Header />}
+      <Header />
       <Routes>
         <Route
           path="/auth/login"
@@ -167,7 +166,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/task/:id"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -175,7 +174,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-          <Route
+        <Route
           path="/review/:id"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -191,7 +190,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-          <Route
+        <Route
           path="/review"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -199,7 +198,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-            <Route
+        <Route
           path="/withdraw"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -215,7 +214,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-          <Route
+        <Route
           path="/profile"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -223,7 +222,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-          <Route
+        <Route
           path="/settings"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -232,19 +231,33 @@ function AppContent() {
           }
         />
         {/* Redirect root path */}
-        <Route
+        {/* <Route
           path="/"
           element={
             <Navigate to={isLoggedIn ? "/home" : "/auth/login"} replace />
           }
+        /> */}
+
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <LandingPage />
+            ) : (
+              <LandingPage />
+            )
+          }
+        />
+        <Route
+          path="/landing"
+          element={<LandingPage />}
         />
         {/* Catch all other routes */}
         <Route
           path="*"
           element={
             <Navigate to={isLoggedIn ? "/home" : "/auth/login"} replace />
-          }
-        />
+          } />
       </Routes>
       <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
     </div>
