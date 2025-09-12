@@ -68,25 +68,33 @@ function HomePage() {
     alert('Coming Soon! Daily check-in feature will be available soon.');
   };
 
-  const handleRefer = async () => {
-    const shareMessage = `Join Rate To Earn and start earning rewards!\n\nRate services and complete tasks to earn daily.\n\nUse my referral code: ${referralCode} to get started!\n\nVisit ${window.location.origin} to sign up!`;
+const handleRefer = async () => {
+  const shareMessage = 
+    ` Join *Rate To Earn*! \n\n` +
+    `Earn daily rewards by rating services & completing simple tasks.\n\n` +
+    `Use my referral code: *${referralCode}*\n\n` +
+    `👉 Sign up here: ${window.location.origin}`;
 
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Rate To Earn - Refer & Earn',
-          text: shareMessage,
-          url: window.location.origin,
-        });
-        console.log('Shared successfully');
-      } catch (error) {
-        console.log('Error sharing:', error);
-        alert(`Sharing failed: ${error.message}`);
-      }
-    } else {
-      alert('Web Share API is not supported on this browser. Please copy the referral code and share it manually.');
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Rate To Earn - Refer & Earn',
+        text: shareMessage,
+        url: window.location.origin,
+      });
+      console.log('Shared successfully');
+    } catch (error) {
+      console.log('Error sharing:', error);
+      alert(`Sharing failed: ${error.message}`);
     }
-  };
+  } else {
+    // Fallback: copy referral code
+    navigator.clipboard.writeText(`${referralCode}`).then(() => {
+      alert(`Web Share not supported. Referral code *${referralCode}* copied to clipboard!`);
+    });
+  }
+};
+
 
   useEffect(() => {
     const fetchData = async () => {
