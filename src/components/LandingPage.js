@@ -2,6 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function LandingPage() {
+  const isAndroid = () => {
+    return navigator.userAgent.toLowerCase().includes("android");
+  }
+
   return (
     <>
       <style>{`
@@ -110,7 +114,7 @@ function LandingPage() {
         }
         
         .btn-primary-custom {
-          background: linear-gradient(135deg, #7B2CBH 0%, #5A189A 100%);
+          background: linear-gradient(135deg, #7B2CBF 0%, #5A189A 100%);
           border: none;
           border-radius: 12px;
           padding: 16px 32px;
@@ -235,12 +239,6 @@ function LandingPage() {
           100% { transform: rotate(360deg); }
         }
         
-        .stats-card:hover {
-          transform: translateY(-5px);
-          border-color: rgba(157, 78, 221, 0.6);
-          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-        
         .stats-number {
           font-size: 3.5rem;
           font-weight: 900;
@@ -331,13 +329,13 @@ function LandingPage() {
                     <span>🚀</span>
                     Start Earning Now
                   </Link>
-                  <Link
-                    to="/download-apk"
+                  <button 
+                    onClick={() => window.location.href = '/app-debug.apk'}
                     className="btn btn-secondary-custom"
                   >
                     <span>📱</span>
                     Download APK
-                  </Link>
+                  </button>
                 </div>
                 
                 <p className="text-white-75 small">

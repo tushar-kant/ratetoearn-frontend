@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Header() {
+  const isAndroid = () => {
+    return navigator.userAgent.toLowerCase().includes("android");
+  }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -30,14 +33,7 @@ function Header() {
               <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-3.5L19 4l-1.5 1.5M5 20l-1.5-1.5L5 17m0-10L3.5 5.5 5 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>`
     },
-    {
-      to: "/landing",
-      text: "Landing Page",
-      icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="me-2" style={{ verticalAlign: 'middle' }}>
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>`
-    }
+   
   ];
 
   const loggedOutLinks = [
@@ -80,29 +76,11 @@ function Header() {
                 boxShadow: '0 0 15px rgba(114, 9, 183, 0.4)'
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M12 2L2 7L12 12L22 7L12 2Z"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 17L12 22L22 17"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 12L12 17L22 12"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8.5 14.5A4 4 0 0 0 12 11.5a4 4 0 0 0 3.5 3 4 4 0 0 1-7 0z"></path>
+              <path d="M3 9c.6-1.5 3-2.2 5-2 4 0 5 2 5 5.5 0 1.5-1 3-2 4.5-.4 1-.5 2-.5 3V22"></path>
+              <path d="M21 9c-.6-1.5-3-2.2-5-2-4 0-5 2-5 5.5 0 1.5 1 3 2 4.5.4 1 .5 2 .5 3V22"></path>
+            </svg>
             </div>
 
             {/* Simple title */}
@@ -118,7 +96,7 @@ function Header() {
                 letterSpacing: '-0.01em'
               }}
             >
-              Tasky
+              TaskRush
             </h1>
           </div>
 
@@ -213,11 +191,12 @@ function Header() {
                   }
                 })()}
                 <hr style={{ margin: '0', border: 'none', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }} />
-                <a
-                  href="/download-apk"
-                  className="w-100 text-start px-3 py-2 border-0 text-decoration-none d-block"
-                  onClick={handleMenuItemClick}
-                  style={{
+                {isAndroid() && (
+                  <a
+                    href="/app-debug.apk"
+                    className="w-100 text-start px-3 py-2 border-0 text-decoration-none d-block"
+                    onClick={handleMenuItemClick}
+                    style={{
                     background: 'transparent',
                     color: 'white',
                     fontSize: '14px',
@@ -233,6 +212,7 @@ function Header() {
                 >
                   Download APK
                 </a>
+                )}
               </div>
             )}
           </div>
