@@ -25,6 +25,10 @@ import Profile from './components/user/Profile';
 import Settings from './components/user/Setting';
 import WithdrawPage from './components/WithdrawPage';
 import LandingPage from './components/landingPage/LandingPage';
+import AboutUs from './components/basicpages/AboutUs';
+import Faq from './components/basicpages/Faq';
+import ContactUs from './components/basicpages/ContactUs';
+import PrivacyPolicy from './components/basicpages/PrivacyPolicy';
 
 
 // Protected Route Component
@@ -232,6 +236,38 @@ function AppContent() {
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
               <Settings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/aboutus"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <AboutUs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/faq"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Faq />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contactus"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <ContactUs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/privacypolicy"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <PrivacyPolicy />
             </ProtectedRoute>
           }
         />
