@@ -22,7 +22,7 @@ import ReviewPage from './components/reviewPage/Review';
 import ReviewDetails from './components/reviewPage/ReviewDetails';
 
 import Profile from './components/user/Profile';
-import Settings from './components/Setting';
+import Settings from './components/user/Setting';
 import WithdrawPage from './components/WithdrawPage';
 import LandingPage from './components/landingPage/LandingPage';
 

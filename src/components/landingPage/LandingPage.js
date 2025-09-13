@@ -1,6 +1,142 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// Hero Section Component
+function HeroSection() {
+  return (
+    <div className="hero-section">
+      <div className="container hero-content">
+        <div className="row align-items-center">
+          <div className="col-lg-8">
+            <div className="money-icon mb-4">💰</div>
+            <h1 className="hero-title mb-4">Tasky</h1>
+            <p className="hero-subtitle mb-4">Turn Your Time Into Money!</p>
+            <p className="hero-description mb-5">
+              Complete simple tasks and earn real rewards daily. Join thousands of users already earning!
+            </p>
+
+            {/* CTA Buttons in Hero */}
+            <div className="d-flex flex-column flex-sm-row gap-3 mb-4">
+              <Link
+                to="/home"
+                className="btn btn-primary-custom"
+              >
+                <span>🚀</span>
+                Start Earning Now
+              </Link>
+              <button
+                onClick={() => window.location.href = '/app-debug.apk'}
+                className="btn btn-secondary-custom"
+              >
+                <span>📱</span>
+                Download APK
+              </button>
+            </div>
+
+            <p className="text-white-75 small">
+              ✨ No investment required • Instant payouts • 5K+ happy users
+            </p>
+          </div>
+          <div className="col-lg-4 text-center">
+            <div className="mobile-icon" style={{ fontSize: '8rem', filter: 'drop-shadow(0 0 20px rgba(74, 111, 220, 0.6))' }}>
+              📱
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Earning Section Component
+function EarningSection() {
+  return (
+    <div className="container py-5">
+      <div className="row justify-content-center mb-5">
+        <div className="col-lg-8 text-center">
+          <h2 className="display-5 fw-bold text-white mb-4">How to Earn Money</h2>
+          <p className="fs-5 text-white-75">Choose your preferred way to earn rewards</p>
+        </div>
+      </div>
+
+      <div className="row g-4 mb-5">
+        <div className="col-lg-3 col-md-6">
+          <div className="card earn-card h-100 text-center p-4">
+            <div className="earn-icon">📱</div>
+            <h5 className="fw-bold mb-3">Install Apps</h5>
+            <p>Download and try new apps to earn instant rewards</p>
+          </div>
+        </div>
+
+        <div className="col-lg-3 col-md-6">
+          <div className="card earn-card h-100 text-center p-4">
+            <div className="earn-icon">🎥</div>
+            <h5 className="fw-bold mb-3">Watch Videos</h5>
+            <p>Watch engaging content and get paid for your time</p>
+          </div>
+        </div>
+
+        <div className="col-lg-3 col-md-6">
+          <div className="card earn-card h-100 text-center p-4">
+            <div className="earn-icon">⭐</div>
+            <h5 className="fw-bold mb-3">Write Reviews</h5>
+            <p>Share your honest opinions and earn rewards</p>
+          </div>
+        </div>
+
+        <div className="col-lg-3 col-md-6">
+          <div className="card earn-card h-100 text-center p-4">
+            <div className="earn-icon">👥</div>
+            <h5 className="fw-bold mb-3">Refer Friends</h5>
+            <p>Invite friends and earn bonus rewards together</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Stats Section Component
+function StatsSection() {
+  return (
+    <div className="container py-5">
+      <div className="row g-4 mb-5">
+        <div className="col-lg-6 col-md-6">
+          <div className="stats-card text-center">
+            <h3 className="stats-number">5K+</h3>
+            <p className="fs-5">Active Users</p>
+          </div>
+        </div>
+        <div className="col-lg-6 col-md-6">
+          <div className="stats-card text-center">
+            <h3 className="stats-number">₹10K+</h3>
+            <p className="fs-5">INR Paid Out</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="row justify-content-center">
+        <div className="col-lg-6 text-center">
+          <p className="mb-2">
+            Version 1.0.0 | Contact: help.taskrush@gmail.com
+          </p>
+          <p className="small text-white-75">
+            Start earning today - No investment required! 💙
+          </p>
+        </div>
+      </div>
+      <div className="mt-4">      </div>
+
+
+
+
+
+    </div>
+  );
+}
+
+// Main Landing Page Component
 function LandingPage() {
   const isAndroid = () => {
     return navigator.userAgent.toLowerCase().includes("android");
@@ -308,122 +444,14 @@ function LandingPage() {
           <div className="coin" style={{ left: '90%', animationDelay: '3s' }}>💎</div>
         </div>
 
-        {/* Enhanced Hero Section */}
-        <div className="hero-section">
-          <div className="container hero-content">
-            <div className="row align-items-center">
-              <div className="col-lg-8">
-                <div className="money-icon mb-4">💰</div>
-                <h1 className="hero-title mb-4">Tasky</h1>
-                <p className="hero-subtitle mb-4">Turn Your Time Into Money!</p>
-                <p className="hero-description mb-5">
-                  Complete simple tasks and earn real rewards daily. Join thousands of users already earning!
-                </p>
-                
-                {/* CTA Buttons in Hero */}
-                <div className="d-flex flex-column flex-sm-row gap-3 mb-4">
-                  <Link
-                    to="/home"
-                    className="btn btn-primary-custom"
-                  >
-                    <span>🚀</span>
-                    Start Earning Now
-                  </Link>
-                  <button 
-                    onClick={() => window.location.href = '/app-debug.apk'}
-                    className="btn btn-secondary-custom"
-                  >
-                    <span>📱</span>
-                    Download APK
-                  </button>
-                </div>
-                
-                <p className="text-white-75 small">
-                  ✨ No investment required • Instant payouts • 5K+ happy users
-                </p>
-              </div>
-              <div className="col-lg-4 text-center">
-                <div className="mobile-icon" style={{fontSize: '8rem', filter: 'drop-shadow(0 0 20px rgba(74, 111, 220, 0.6))'}}>
-                  📱
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Hero Section */}
+        <HeroSection />
 
-        {/* Earning Methods */}
-        <div className="container py-5">
-          <div className="row justify-content-center mb-5">
-            <div className="col-lg-8 text-center">
-              <h2 className="display-5 fw-bold text-white mb-4">How to Earn Money</h2>
-              <p className="fs-5 text-white-75">Choose your preferred way to earn rewards</p>
-            </div>
-          </div>
-          
-          <div className="row g-4 mb-5">
-            <div className="col-lg-3 col-md-6">
-              <div className="card earn-card h-100 text-center p-4">
-                <div className="earn-icon">📱</div>
-                <h5 className="fw-bold mb-3">Install Apps</h5>
-                <p>Download and try new apps to earn instant rewards</p>
-              </div>
-            </div>
-            
-            <div className="col-lg-3 col-md-6">
-              <div className="card earn-card h-100 text-center p-4">
-                <div className="earn-icon">🎥</div>
-                <h5 className="fw-bold mb-3">Watch Videos</h5>
-                <p>Watch engaging content and get paid for your time</p>
-              </div>
-            </div>
-            
-            <div className="col-lg-3 col-md-6">
-              <div className="card earn-card h-100 text-center p-4">
-                <div className="earn-icon">⭐</div>
-                <h5 className="fw-bold mb-3">Write Reviews</h5>
-                <p>Share your honest opinions and earn rewards</p>
-              </div>
-            </div>
-            
-            <div className="col-lg-3 col-md-6">
-              <div className="card earn-card h-100 text-center p-4">
-                <div className="earn-icon">👥</div>
-                <h5 className="fw-bold mb-3">Refer Friends</h5>
-                <p>Invite friends and earn bonus rewards together</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Earning Methods Section */}
+        <EarningSection />
 
-        {/* Stats */}
-        <div className="container py-5">
-          <div className="row g-4 mb-5">
-            <div className="col-lg-6 col-md-6">
-              <div className="stats-card text-center">
-                <h3 className="stats-number">5K+</h3>
-                <p className="fs-5">Active Users</p>
-              </div>
-            </div>
-            <div className="col-lg-6 col-md-6">
-              <div className="stats-card text-center">
-                <h3 className="stats-number">₹10K+</h3>
-                <p className="fs-5">INR Paid Out</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="row justify-content-center">
-            <div className="col-lg-6 text-center">
-              <p className="mb-2">
-                Version 1.0.0 | Contact: support@tasky.com
-              </p>
-              <p className="small text-white-75">
-                Start earning today - No investment required! 💙
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* Stats Section */}
+        <StatsSection />
       </div>
     </>
   );
