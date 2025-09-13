@@ -21,7 +21,7 @@ function HomePage() {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       setUserData(JSON.parse(storedUserData));
-  }
+    }
   }, []);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function HomePage() {
         totalWithdrawnPoints: response.totalWithdrawn,
         withdrawablePoints: response.availableNow
       });
-      setReferralCode(response.referralCode)
+      setReferralCode(response.referralCode);
     } catch (error) {
       console.error('Error fetching earning:', error);
     }
@@ -66,8 +66,20 @@ function HomePage() {
     alert('Coming Soon! Daily check-in feature will be available soon.');
   };
 
+  const handleCheckin = async () => {
+    try {
+      const response = await post(API_PATHS.CHECKIN, { phone: userData.phoneNumber });
+      alert('Check-in successful!');
+      console.log(response);
+      fetchEarning(userData.phoneNumber); // Refresh earnings after check-in
+    } catch (error) {
+      console.error('Error during check-in:', error);
+      alert('Check-in failed. Please try again.');
+    }
+  };
+
   const handleRefer = async () => {
-    const shareMessage = 
+    const shareMessage =
       ` Join *Rate To Earn*! \n\n` +
       `Earn daily rewards by rating services & completing simple tasks.\n\n` +
       `Use my referral code: *${referralCode}*\n\n` +
@@ -107,7 +119,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div 
+    <div
       className="min-vh-100"
       style={{
         background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 30%, #16213e 70%, #533483 100%)',
@@ -116,18 +128,19 @@ function HomePage() {
       }}
     >
       <div className="container">
-        <EarningsDashboard 
+        <EarningsDashboard
           earnings={earnings}
           isWithdrawing={isWithdrawing}
           handleWithdraw={handleWithdraw}
           pointsToINR={pointsToINR}
         />
-        
-        <HomeContent 
+
+        <HomeContent
           referralCode={referralCode}
           handleCopyReferral={handleCopyReferral}
           handleDailyCheckIn={handleDailyCheckIn}
           handleRefer={handleRefer}
+          handleCheckin={handleCheckin}
         />
 
         {/* Add spinning animation for loading */}

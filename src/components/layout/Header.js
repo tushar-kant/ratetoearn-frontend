@@ -60,7 +60,7 @@ function Header() {
       <div className="container">
         <div className="d-flex align-items-center justify-content-between">
           {/* Logo and Title Section */}
-          <div className="d-flex align-items-center">
+          <Link to="/home" className="d-flex align-items-center">
             {/* Simple inline icon */}
             <div
               className="me-3"
@@ -98,7 +98,7 @@ function Header() {
             >
               TaskRush
             </h1>
-          </div>
+          </Link>
 
           {/* 3-Dot Menu */}
           <div className="position-relative">

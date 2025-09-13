@@ -4,52 +4,14 @@ import React from 'react';
 const HomeContent = ({ 
   referralCode, 
   handleCopyReferral, 
-  handleDailyCheckIn, 
-  handleRefer 
+  handleRefer,
+  handleCheckin
 }) => {
   return (
     <>
       {/* Action Buttons Row */}
       <div className="row g-2 mb-3">
-        {/* Daily Check-in */}
-        <div className="col-6">
-          <button
-            onClick={handleDailyCheckIn}
-            className="w-100 d-flex flex-column align-items-center justify-content-center"
-            style={{
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '15px',
-              padding: '15px',
-              color: 'white',
-              fontSize: '0.85rem',
-              fontWeight: '600',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
-              minHeight: '80px'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(168, 85, 247, 0.2)';
-              e.target.style.transform = 'translateY(-2px)';
-              e.target.style.boxShadow = '0 5px 20px rgba(168, 85, 247, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'rgba(255, 255, 255, 0.1)';
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = 'none';
-            }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="mb-1">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
-              <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2"/>
-              <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2"/>
-              <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2"/>
-              <polyline points="9,14 11,16 15,12" stroke="currentColor" strokeWidth="2"/>
-            </svg>
-            Daily Check-in
-          </button>
-        </div>
+    
 
         {/* Refer & Earn */}
         <div className="col-6">
@@ -87,6 +49,45 @@ const HomeContent = ({
               <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" strokeWidth="2"/>
             </svg>
             Refer & Earn
+          </button>
+        </div>
+
+        {/* Checkin */}
+        <div className="col-6">
+          <button
+            onClick={handleCheckin}
+            className="w-100 d-flex flex-column align-items-center justify-content-center"
+            style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '15px',
+              padding: '15px',
+              color: 'white',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              minHeight: '80px'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(168, 85, 247, 0.2)';
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 5px 20px rgba(168, 85, 247, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = 'none';
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="mb-1">
+              <path d="M7 10V18C7 19.1046 7.89543 20 9 20H15C16.1046 20 17 19.1046 17 18V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M4 10H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M5 6H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 6C10 4.89543 10.8954 4 12 4C13.1046 4 14 4.89543 14 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Checkin
           </button>
         </div>
       </div>
