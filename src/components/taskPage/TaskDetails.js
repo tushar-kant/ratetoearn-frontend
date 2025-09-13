@@ -109,7 +109,7 @@ function TaskDetails() {
                   </div>
                   <div className="d-flex align-items-center gap-2">
                     <CheckCircle className="w-5 h-5" />
-                    <span>{offer?.completions?.toLocaleString()} completed</span>
+                    <span>{offer?.completions?.toLocaleString()} Pending</span>
                   </div>
                   <div className="d-flex align-items-center gap-2">
                     <Clock className="w-5 h-5" />
@@ -147,7 +147,8 @@ function TaskDetails() {
                   className="btn btn-success btn-lg w-100 py-3 d-flex align-items-center justify-content-center gap-2"
                 >
                   <Trophy className="w-5 h-5" />
-                  Complete & Claim Reward
+                     Task Submitted – Under Review
+
                 </button>
               )}
             </div>
@@ -263,36 +264,43 @@ function TaskDetails() {
             </div>
           )}
 
-          {showCompletionModal && (
-            <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-body text-center p-4">
-                    <div className="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '80px', height: '80px' }}>
-                      <Trophy className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="h4 fw-bold mb-2">Congratulations!</h3>
-                    <p className="text-muted">You've successfully completed the task</p>
+        {showCompletionModal && (
+  <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-body text-center p-4">
+          <div className="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '80px', height: '80px' }}>
+            <Trophy className="w-10 h-10 text-white" />
+          </div>
 
-                    <div className="alert alert-success mb-3">
-                      <div className="text-center">
-                        <p className="small mb-1">Your Reward</p>
-                        <p className="h4 fw-bold text-success mb-1">write coins {offer?.earning}</p>
-                        <p className="small mb-0">Will be credited within 24 hours</p>
-                      </div>
-                    </div>
+          {/* Heading */}
+          <h3 className="h4 fw-bold mb-2 text-warning">Pending</h3>
+          <p className="text-muted">
+            Once the task is verified, your reward will be sent within 24 hours
+          </p>
 
-                    <button
-                      onClick={() => setShowCompletionModal(false)}
-                      className="btn btn-success w-100"
-                    >
-                      Awesome!
-                    </button>
-                  </div>
-                </div>
-              </div>
+          {/* Reward Info */}
+          <div className="alert alert-warning mb-3">
+            <div className="text-center">
+              <p className="small mb-1">Your Reward</p>
+              <p className="h4 fw-bold text-warning mb-1">{offer?.earning} Coins</p>
+              <p className="small mb-0">Will be credited after verification</p>
             </div>
-          )}
+          </div>
+
+          {/* Close Button */}
+          <button
+            onClick={() => setShowCompletionModal(false)}
+            className="btn btn-warning w-100"
+          >
+            Okay, Got it!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
         </div>
       ) : (
         <div className="d-flex justify-content-center align-items-center min-vh-100">

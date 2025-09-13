@@ -74,7 +74,7 @@ function HomePage() {
       fetchEarning(userData.phoneNumber); // Refresh earnings after check-in
     } catch (error) {
       console.error('Error during check-in:', error);
-      alert('Check-in failed. Please try again.');
+      alert('Wait for next day to checkin Again!');
     }
   };
 
